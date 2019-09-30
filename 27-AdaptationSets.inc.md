@@ -1,6 +1,6 @@
 ## Adaptation set contents ## {#adaptation-set-constraints}
 
-[=Adaptation sets=] SHALL contain [=media segments=] compatible with a single decoder, although services MAY require the decoder to be re-initialized when switching to a new [=representation=]. See also [[#bitstream-switching]].
+[=Adaptation sets=] SHALL contain [=media segments=] compatible with a single decoder, although services MAY require the decoder to be re-initialized when switching to a new [=representation=].
 
 All [=representations=] in the same [=adaptation set=] SHALL have the same [=timescale=], both in the [=MPD=] and in the [=initialization segment=] `tkhd` boxes.
 
@@ -12,21 +12,19 @@ Note: [[DVB-DASH]] defines some relevant constraints in section 4.5. Consider ob
 
 Each [=adaptation set=] SHALL match exactly one category from among the following:
 
-* A <dfn>video adaptation set</dfn> contains visual information for display to the user. Such an adaptation set is identified by `@mimeType="video/mp4"`. The values for `@codecs` SHALL be restricted to values defined in [[#codecs]].
-* An <dfn>audio adaptation set</dfn> contains sound information to be rendered to the user. Such an adaptation set is identified by `@mimeType="audio/mp4"`. The values for `@codecs` SHALL be restricted to values defined in [[#codecs]].
+* A <dfn>video adaptation set</dfn> contains visual information for display to the user. Such an adaptation set is identified by `@mimeType="video/mp4"`.
+* An <dfn>audio adaptation set</dfn> contains sound information to be rendered to the user. Such an adaptation set is identified by `@mimeType="audio/mp4"`.
 * A <dfn>text adaptation set</dfn> contains visual overlay information to be rendered as auxiliary or accessibility information. Such an [=adaptation set=] is identified by one of:
-	* `@mimeType="application/mp4"` and a `@codecs` parameter of a text coding technology defined in [[#codecs]].
+	* `@mimeType="application/mp4"` and a `@codecs` parameter of a text coding technology.
 	* `@mimeType="application/ttml+xml"` with no `@codecs` parameter.
 * A metadata adaptation set contains information that is not expected to be rendered by a specific media handler, but is interpreted by the application. Such an adaptation set is identified by `@mimeType="application/mp4"` and an appropriate sample entry identified by the `@codecs` parameter.
-* A <dfn>thumbnail adaptation set</dfn> contains [[#thumbnails|thumbnail images for efficient display during seeking]]. Such an adaptation set is identified by `@mimeType="image/jpeg"` or `@mimeType="image/png"` in combination with an [=essential property descriptor=] with `@schemeIdUri="http://dashif.org/guidelines/thumbnail_tile"`.
+* A thumbnail adaptation set contains thumbnail images for efficient display during seeking. Such an adaptation set is identified by `@mimeType="image/jpeg"` or `@mimeType="image/png"` in combination with an [=essential property descriptor=] with `@schemeIdUri="http://dashif.org/guidelines/thumbnail_tile"`.
 
 Issue: What exactly is metadata `@codecs` supposed to be? https://github.com/Dash-Industry-Forum/DASH-IF-IOP/issues/290
 
 The [=adaptation set=] type SHALL be used by a DASH client to identify the appropriate handler for rendering. Typically, a DASH client selects at most one [=adaptation set=] of each type.
 
 In addition, a DASH client SHOULD use the value of the `@codecs` parameter to determine whether the underlying media playback platform can play the media contained within the [=adaptation set=].
-
-See [[#codecs]] for detailed codec-specific constraints.
 
 ## Video adaptation set constraints ## {#video-constraints}
 
@@ -99,4 +97,4 @@ The `AudioChannelConfiguration` element SHALL be present either on the [=adaptat
 
 [=Text adaptation sets=] SHOULD be annotated using descriptors defined by [[!MPEGDASH]], specifically `Role`, `Accessibility`, `EssentialProperty` and `SupplementalProperty` descriptors.
 
-Guidelines for annotation are provided in [[#selection]] and section 7.1.2 of [[DVB-DASH]].
+Additional guidelines for annotation are provided in section 7.1.2 of [[DVB-DASH]].

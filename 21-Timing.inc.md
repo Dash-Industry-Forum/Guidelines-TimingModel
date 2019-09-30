@@ -1,7 +1,7 @@
 ## Timing model ## {#timing}
-The purpose of this chapter is to give a holistic overview of DASH presentation timing and related segment addressing. It is not intended to provide details of the timing model and all possible uses of the attributes in [[!MPEGDASH]]. 
+The purpose of this chapter is to give a holistic overview of DASH presentation timing and related segment addressing. It is not intended to provide details of the timing model and all possible uses of the attributes in [[!MPEGDASH]].
 
-In order to achieve higher interoperability, DASH-IF's Implementation Guidelines allow considerably limited options than the ones provided by [[!MPEGDASH]], constraining services to a specific set of reasonably flexible behaviors that are highly interoperable with modern client platforms. This chapter covers the timing model and related segment addressing schemes for these common use-cases. 
+In order to achieve higher interoperability, DASH-IF's Implementation Guidelines allow considerably limited options than the ones provided by [[!MPEGDASH]], constraining services to a specific set of reasonably flexible behaviors that are highly interoperable with modern client platforms. This chapter covers the timing model and related segment addressing schemes for these common use-cases.
 
 ### Conformance requirements ### {#conformance-req}
 This document adds additional constraints to [[!MPEGDASH]] timing requirements.
@@ -21,11 +21,11 @@ There exist two types of Media Presentations, indicated by the `MPD@type`.
 
 The playback of a <dfn>static MPD</dfn> (defined in [[!MPEGDASH]] as a MPD with `MPD@type="static"`) does not depend on the mapping of the MPD timeline to real time. This means that entire presentation is available at any time and  a client can play any part of the presentation at any time (e.g. it can start playback at any time and seek freely within the entire presentation).
 
-The [=MPD timeline=] of a <dfn>dynamic MPD</dfn> (defined in [[!MPEGDASH]] as a MPD with `MPD@type="dynamic"`) has a fixed mapping to wall clock time, with each point on the [=MPD timeline=] corresponding to a point in real time. This means that segments of the presentation get available over time. Clients can introduce an additional offset with respect to wall clock time for the purpose of maintaining an input buffer to cop with network bandwidth fluctuations. 
+The [=MPD timeline=] of a <dfn>dynamic MPD</dfn> (defined in [[!MPEGDASH]] as a MPD with `MPD@type="dynamic"`) has a fixed mapping to wall clock time, with each point on the [=MPD timeline=] corresponding to a point in real time. This means that segments of the presentation get available over time. Clients can introduce an additional offset with respect to wall clock time for the purpose of maintaining an input buffer to cop with network bandwidth fluctuations.
 
 Note: In addition to mapping the [=MPD timeline=] to wall clock time, [[#timing-mpd-updates|a dynamic MPD can be updated during the presentation]]. Updates may add new [=periods=] and remove or modify existing ones including adding new segments with progress in time, though some restrictions apply. See [[#timing-mpd-updates]].
 
-The time zero on the [=MPD timeline=] of a [=dynamic MPD=] is mapped to the point in wall clock time indicated by `MPD@availabilityStartTime`. 
+The time zero on the [=MPD timeline=] of a [=dynamic MPD=] is mapped to the point in wall clock time indicated by `MPD@availabilityStartTime`.
 
 The ultimate purpose of the [=MPD=] is to enable the client to obtain media samples for playback. Additionally it may possibly dynamically switch between different bitrate of the same content to adopt to the network bandwidth fluctuation. The following data structures are most relevant to locating and scheduling the samples:
 
@@ -82,18 +82,18 @@ Note: A [=period=] with a duration of zero might, for example, be the result of 
 
 2. In a [=static MPD=], the first [=period=] starts at the time zero of the [=MPD timeline=]. In a [=dynamic MPD=], the first [=period=] starts at or after the zero point of the [=MPD timeline=].
 
-1. In a [=static MPD=], either the last [=period=] has a `Period@duration` or `MPD@mediaPresentationDuration` exists. 
+1. In a [=static MPD=], either the last [=period=] has a `Period@duration` or `MPD@mediaPresentationDuration` exists.
 1. In a [=dynamic MPD=], the last [=period=] may have a `Period@duration`, in which case it has a fixed duration. If without `Period@duration`, the last [=period=] in a [=dynamic MPD=] has an unknown duration, which allows to extend the timeline indefinitely.
 
 Note: In a [=dynamic MPD=], a [=period=] with an unknown duration may be converted to fixed-duration by an MPD update. Periods in a [=dynamic MPD=] can also be shortened or removed entirely under certain conditions. However, [=Media Presentation=] is defined until (current wall clock time + `MPD@minimumUpdatePeriod`), by which the current MPD is still valid. See [[#timing-mpd-updates]].
 
 5. `MPD@mediaPresentationDuration` may be present. If present, it accurately matches the duration between the time zero on the [=MPD timeline=] and the end of the last period. Clients must calculate the total duration of a [=static MPD=] by adding up the durations of each [=period=] and must rely on the presence of `MPD@mediaPresentationDuration`.
 
-Note: This calculation is necessary because the durations of [[#xlink-feature|XLink periods]] can only be known after the [=XLink=] is resolved. Therefore it is impossible to always determine the total [=MPD=] duration on the service side as only the client is guaranteed to have access to all the required knowledge.
+Note: This calculation is necessary because the durations of XLink periods can only be known after the XLink is resolved. Therefore it is impossible to always determine the total [=MPD=] duration on the service side as only the client is guaranteed to have access to all the required knowledge.
 
 ### Representations ### {#timing-representation}
 
-A <dfn>representation</dfn> is a sequence of <dfn>segment</dfn> as defined by [[!MPEGDASH]] 5.3.1 and 5.3.5.  A `Representation` element is a collection of these <dfn> segment references</dfn> and a description of the samples within the referenced [=media segments=]. 
+A <dfn>representation</dfn> is a sequence of <dfn>segment</dfn> as defined by [[!MPEGDASH]] 5.3.1 and 5.3.5.  A `Representation` element is a collection of these <dfn> segment references</dfn> and a description of the samples within the referenced [=media segments=].
 
 In practice, each representation usually belongs to exactly one [=adaptation set=] and often belongs to exactly one [=period=], although [[#timing-connectivity|a representation may be connected with a representation in another period]].
 
@@ -112,7 +112,7 @@ As recommended by [[!MPEGDASH]] 7.2.1:
 
 
 This document additionally requires:
- - In a [=static MPD=] a [=representation=] SHALL contain enough [=segment references=] to cover the entire time span of the [=period=]. 
+ - In a [=static MPD=] a [=representation=] SHALL contain enough [=segment references=] to cover the entire time span of the [=period=].
 
 <figure>
 	<img src="Images/Timing/StaticMpdMustBeCovered.png" />
@@ -226,7 +226,7 @@ Note: Different media segments may be different byte ranges accessed on the same
 
 #### Media segment duration deviation #### {#segment-duration-deviation}
 
-When using [=simple addressing=], the samples contained in a media segment may cover a different time span on the [=sample timeline=] than what is indicated by the nominal timing in the [=MPD timeline=]. This deviation is defined as the offset between the edges of the nominal time span (as defined by [=MPD timeline=]) and the edges of the true time span (as defined by [=sample timeline], and is calculated separately for each edge. 
+When using [=simple addressing=], the samples contained in a media segment may cover a different time span on the [=sample timeline=] than what is indicated by the nominal timing in the [=MPD timeline=]. This deviation is defined as the offset between the edges of the nominal time span (as defined by [=MPD timeline=]) and the edges of the true time span (as defined by [=sample timeline], and is calculated separately for each edge.
 
 <figure>
 	<img src="Images/Timing/InaccurateAddressing.png" />
@@ -316,14 +316,14 @@ This section only applies to [=dynamic MPDs=].
 
 Three main factors differentiate them from [=static MPDs=]:
 
-1. The segments described in a [=dynamic MPD=] may become available over time, i.e. not all segments are available.   
+1. The segments described in a [=dynamic MPD=] may become available over time, i.e. not all segments are available.
 
 1. Playback of a [=dynamic MPD=] is synchronized to a real time clock (with some amount of client-chosen time shift allowed).
 
 1. A [=dynamic MPD=] may change over time, with clients retrieving new snapshots of the [=MPD=] when the validity duration of the previous snapshot expires.
 
 [[!MPEGDASH]] 5.4.1 requires:
-* A dynamic MPD conforms to the MPD constraints not only at its moment of initial publishing but through the entire <dfn>MPD validity duration</dfn>, which is a period of `MPD@minimumUpdatePeriod` starting from the moment the MPD download is started by a client, unless overridden by [[#inband|in-band validity expiration signaling]].
+* A dynamic MPD conforms to the MPD constraints not only at its moment of initial publishing but through the entire <dfn>MPD validity duration</dfn>, which is a period of `MPD@minimumUpdatePeriod` starting from the moment the MPD download is started by a client, unless overridden by in-band validity expiration signaling.
 
 Advisement: The [=MPD validity duration=] starts when the MPD download is initiated by a client, which may be some time after it is generated/published!
 
@@ -361,9 +361,9 @@ A [=media segment=] is <dfn>available</dfn> when an HTTP request to acquire the 
 
 An <dfn>availability window</dfn> is a time span on the [=MPD timeline=] that determines which [=media segments=] can be expected to be [=available=]. Each [=representation=] has its own [=availability window=]. Consequently, [=availability window=] at each moment is defined by the union of [=segment availability times=] of all available segments at that moment.
 
-A <dfn>segment start point</dfn> (referred to as <dfn>MPD start time</dfn> of a segment in [[!MPEGDASH]]) is the presentation start time of the segment in [=MPD timeline=].
+A segment start point (referred to as "MPD start time of a segment in [[!MPEGDASH]]) is the presentation start time of the segment in [=MPD timeline=].
 
-A <dfn>segment end point</dfn> is defined is the presentation end time of the segment in [=MPD timeline=].
+The <dfn>segment end point</dfn> is the presentation end time of the segment in [=MPD timeline=].
 
 [!MPEGDASH]] requires:
 * A service makes [=available=] all [=media segments=] that have their end point inside or at the end of the [=availability window=].
@@ -413,7 +413,7 @@ The [=time shift buffer=] extends from `now - MPD@timeShiftBufferDepth` to `now`
 </figure>
 
 This document requires:
-* Clients MAY present samples from [=media segments=] that overlap (either in full or in part) the time shift buffer, assuming no other constraints forbid it. 
+* Clients MAY present samples from [=media segments=] that overlap (either in full or in part) the time shift buffer, assuming no other constraints forbid it.
 * Clients SHALL NOT present samples from [=media segments=] that are entirely outside the [=time shift buffer=] (whether in the past or the future).
 * The start of the [=time shift buffer=] may be before the start of the first [=period=]. Clients SHALL NOT use regions of the [=time shift buffer=] that are not covered by [=periods=].
 
@@ -429,7 +429,7 @@ This document requires:
 * Clients SHALL calculate a suitable <dfn>presentation delay</dfn> to ensure that the [=media segments=] it schedules for playback are [=available=] and that there is sufficient time to download them once they become [=available=]. In essence, the [=presentation delay=] decreases the [=time shift buffer=], creating an [=effective time shift buffer=] with a reduced duration.
 
 [[!MPEGDASH]] allows:
-* Services may define the `MPD@suggestedPresentationDelay` attribute to provide a suggested [=presentation delay=]. 
+* Services may define the `MPD@suggestedPresentationDelay` attribute to provide a suggested [=presentation delay=].
 
 This document requires:
 * Clients SHOULD use `MPD@suggestedPresentationDelay` when provided, ignoring the calculated value.
@@ -481,7 +481,7 @@ This document requires:
 
 * Since clients usually require some time to download and process an [=MPD=] update, a service SHOULD NOT assume perfect update timing.
 
-* In addition to signaling that clients are expected to poll for regular [=MPD=] updates, a service MAY publish [[#inband|in-band events to update the MPD validity duration]] at moments of its choosing.
+* In addition to signaling that clients are expected to poll for regular [=MPD=] updates, a service MAY publish in-band events to update the MPD validity duration at moments of its choosing.
 
 This document also requires:
 * Clients SHOULD use `@id` to track [=period=], [=adaptation set=] and [=representation=] identity across MPD updates.
@@ -556,7 +556,7 @@ An [=MPD=] update that removes content MAY be combined [[#timing-mpd-updates-add
 Live services can reach a point where no more content will be produced - existing content will be played back by clients and once they reach the end, playback will cease.
 
 This document requires:
-* When this occurs, services SHALL define a fixed duration for the last [=period=], remove the `MPD@minimumUpdatePeriod` attribute and cease performing [=MPD=] updates to signal that no more content will be added to the [=MPD=]. 
+* When this occurs, services SHALL define a fixed duration for the last [=period=], remove the `MPD@minimumUpdatePeriod` attribute and cease performing [=MPD=] updates to signal that no more content will be added to the [=MPD=].
 
 * The `MPD@type` MAY be changed to `static` at this point or later if the service is to be converted to a [=static MPD=] for on-demand viewing.
 
@@ -564,7 +564,7 @@ This document requires:
 
 To stay informed of the [=MPD=] updates, clients need to perform <dfn>MPD refreshes</dfn> at appropriate moments to download the updated [=MPD=] snapshots.
 
-This document requires: 
+This document requires:
 * Clients presenting [=dynamic MPDs=] SHALL execute the following [=MPD=] refresh logic:
 
 1. When an [=MPD=] snapshot is downloaded, it is valid for the present moment and at least `MPD@minimumUpdatePeriod` after that.
@@ -575,7 +575,7 @@ This document requires:
 
 Note: There is no requirement that clients poll for updates at `MPD@minimumUpdatePeriod` interval. They can do so as often or as rarely as they wish - this attribute simply defines the [=MPD=] validity duration.
 
-Services may [[#inband|publish in-band events to explicitly signal MPD validity]] instead of expecting clients to regularly refresh on their own initiative. This enables finer control by the service but might not be supported by all clients. 
+Services may publish in-band events to explicitly signal MPD validity instead of expecting clients to regularly refresh on their own initiative. This enables finer control by the service but might not be supported by all clients.
 
 This document requires:
 * Services SHALL NOT require clients to support in-band events.

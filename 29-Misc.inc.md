@@ -27,7 +27,7 @@ One example is if the DASH client operates on [=media segment=] granularity. As 
 
 [[ECMASCRIPT]] is unable to accurately represent numeric values greater than 2<sup>53</sup> using built-in types. Therefore, interoperable services cannot use such values.
 
-All timescales are start times used in a DASH presentations SHALL be sufficiently small that no timecode value exceeding 2<sup>53</sup> will be encountered, even during the publishing of long-lasting [[#svc-live|live services]].
+All timescales are start times used in a DASH presentations SHALL be sufficiently small that no timecode value exceeding 2<sup>53</sup> will be encountered, even during the publishing of long-lasting live services.
 
 Note: This may require the use of 64-bit fields, although the values must still be limited to under 2<sup>53</sup>.
 

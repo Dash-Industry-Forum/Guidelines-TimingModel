@@ -7,25 +7,9 @@
 #include "28-Http.inc.md"
 #include "29-Misc.inc.md"
 
-#include "40-Features.inc.md"
-
-#include "50-ContentSelection.inc.md"
-
-#include "70-Services.inc.md"
-
-#include "65-AdInsertion.inc.md"
-
-#include "80-Codecs.inc.md"
-
-#include "90-Security.inc.md"
-
-#include "99-Annexes.inc.md"
-
 # Externally defined terms # {#external-terms}
 
 : <dfn>adaptation set</dfn>
-:: See [[!MPEGDASH]]
-: <dfn>asset identifier</dfn>
 :: See [[!MPEGDASH]]
 : <dfn>CMAF track file</dfn>
 :: See [[!MPEGCMAF]]
@@ -44,12 +28,12 @@
 <pre class="metadata">
 Revision: 5.0
 
-Title: Guidelines for Implementation: DASH-IF Interoperability Points
+Title: Guidelines for Implementation: DASH-IF Interoperability Requirements
 Status: LD
 Shortname: iop
 URL: https://dashif.org/guidelines/
-Issue Tracking: GitHub https://github.com/Dash-Industry-Forum/DASH-IF-IOP/issues
-Repository: https://github.com/Dash-Industry-Forum/DASH-IF-IOP GitHub
+Issue Tracking: GitHub https://github.com/Dash-Industry-Forum/Guidelines-Interoperability/Issues
+Repository: https://github.com/Dash-Industry-Forum/Guidelines-Interoperability GitHub
 Editor: DASH Industry Forum
 
 Default Highlight: text

@@ -42,7 +42,7 @@ Issue: What do relative BaseURLs do? Do they just incrementally build up the URL
 
 ### Conditional MPD downloads ### {#conditional-mpd-downloads-feature}
 
-It can often be the case that a [[#svc-live|live service]] signals a short [=MPD=] validity period to allow for the possibility of terminating the last [=period=] with minimal end-to-end latency. At the same time, generating future [=segment references=] might not require any additional information to be obtained by c7lients. That is, a situation might occur where constant [=MPD refreshes=] are required but the [=MPD=] content rarely changes.
+It can often be the case that a live service signals a short [=MPD=] validity period to allow for the possibility of terminating the last [=period=] with minimal end-to-end latency. At the same time, generating future [=segment references=] might not require any additional information to be obtained by c7lients. That is, a situation might occur where constant [=MPD refreshes=] are required but the [=MPD=] content rarely changes.
 
 Clients using HTTP to perform [=MPD refreshes=] SHOULD use conditional GET requests as specified in [[!RFC7232]] to avoid unnecessary data transfers when the contents of the [=MPD=] do not change between refreshes.
 
