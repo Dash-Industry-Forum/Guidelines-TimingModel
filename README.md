@@ -14,4 +14,4 @@ Most recent output from the **master** branch:
 * [PDF document](https://dashif-documents.azurewebsites.net/Guidelines-Interoperability/master/Guidelines-Interoperability.pdf)
 * [Download PDF + HTML as archive](https://dashif-documents.azurewebsites.net/Guidelines-Interoperability/master/Guidelines-Interoperability.zip)
 
-![Build status of master branch](https://dev.azure.com/dashif/Automation/_apis/build/status/Guidelines-Interoperability?branchName=master) [Build history](https://dev.azure.com/dashif/Automation/_build?definitionId=xxxxxxxxxxx)
+![Build status of master branch](https://dev.azure.com/dashif/Automation/_apis/build/status/Guidelines-Interoperability?branchName=master) [Build history](https://dev.azure.com/dashif/Automation/_build?definitionId=13)
