@@ -1,10 +1,7 @@
 #include "01-Intro.inc.md"
 
-#include "20-Interoperability.inc.md"
 #include "21-Timing.inc.md"
 #include "22-Addressing.inc.md"
-#include "27-AdaptationSets.inc.md"
-#include "28-Http.inc.md"
 #include "29-Misc.inc.md"
 
 # Externally defined terms # {#external-terms}
@@ -13,8 +10,6 @@
 :: See [[!MPEGDASH]]
 : <dfn>CMAF track file</dfn>
 :: See [[!MPEGCMAF]]
-: <dfn>essential property descriptor</dfn>
-:: See [[!MPEGDASH]]
 : <dfn>index segment</dfn>
 :: See [[!MPEGDASH]]
 : <dfn>initialization segment</dfn>
@@ -28,12 +23,12 @@
 <pre class="metadata">
 Revision: 5.0
 
-Title: Guidelines for Implementation: DASH-IF Interoperability Requirements
-Status: LD
-Shortname: iop
-URL: https://dashif.org/guidelines/
-Issue Tracking: GitHub https://github.com/Dash-Industry-Forum/Guidelines-Interoperability/Issues
-Repository: https://github.com/Dash-Industry-Forum/Guidelines-Interoperability GitHub
+Title: DASH-IF implementation guidelines: the DASH timing model
+Status: LS-COMMIT
+Shortname: dash-timing
+URL: https://dashif-documents.azurewebsites.net/Guidelines-TimingModel/master/Guidelines-TimingModel.html
+Issue Tracking: GitHub https://github.com/Dash-Industry-Forum/Guidelines-TimingModel/issues
+Repository: https://github.com/Dash-Industry-Forum/Guidelines-TimingModel GitHub
 Editor: DASH Industry Forum
 
 Default Highlight: text
