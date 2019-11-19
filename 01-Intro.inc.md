@@ -72,7 +72,7 @@ The MPD is an XML file that follows a schema defined by [[!MPEGDASH]]. This sche
 
 [[!MPEGDASH]] defines two data container formats, one based on [[!ISOBMFF]] and the other [[!MPEG2TS]]. However, only the former is used in modern solutions. This document only supports services using the [[!ISOBMFF]] container format.
 
-[!MPEGCMAF] is the constrained media format based on [[!ISOBMFF]], specifically designed for adaptive streaming. This document uses [[!MPEGCMAF]] compatible data containers.
+[[!MPEGCMAF]] is the constrained media format based on [[!ISOBMFF]], specifically designed for adaptive streaming. This document uses [[!MPEGCMAF]] compatible data containers.
 
 Note: The relationship to [[!MPEGCMAF]] is constrained to the container format. In particular, there is no requirement to conform to [[!MPEGCMAF]] media profiles.
 

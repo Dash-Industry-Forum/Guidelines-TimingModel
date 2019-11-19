@@ -52,7 +52,7 @@ At least one `Representation/BaseURL` element SHALL be present in the [=MPD=], c
 
 The `SegmentBase@indexRange` attribute SHALL be present in the [=MPD=]. The value of this attribute identifies the byte range of the [=index segment=] in the [=CMAF track file=]. The value is a `byte-range-spec` as defined in [[!RFC7233]], referencing a single range of bytes.
 
-The `SegmentBase@timescale` attribute SHALL be present and its value SHALL match the value of the `timescale` field in the [=index segment=] (in the [[!ISOBMFF]] `sidx` box) and the value of the `timescale` field in the [=initialization segment=] (in the [[!ISOBMFF `tkhd` box)]]).
+The `SegmentBase@timescale` attribute SHALL be present and its value SHALL match the value of the `timescale` field in the [=index segment=] (in the [[!ISOBMFF]] `sidx` box) and the value of the `timescale` field in the [=initialization segment=] (in the `tkhd` box [[!ISOBMFF]]).
 
 The `SegmentBase/Initialization@range` attribute SHALL identify the byte range of the initialization segment in the [=CMAF track file=]. The value is a `byte-range-spec` as defined in [[!RFC7233]], referencing a single range of bytes. The `Initialization@sourceURL` attribute SHALL NOT be used.
 
