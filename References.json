@@ -9,5 +9,11 @@
     },
     "HLS": {
         "aliasOf": "rfc8216"
+    },
+    "DASH": {
+        "aliasOf": "MPEGDASH"
+    },
+    "CMAF": {
+        "aliasOf": "MPEGCMAF"
     }
 }

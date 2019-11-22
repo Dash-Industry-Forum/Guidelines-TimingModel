@@ -20,9 +20,9 @@ You SHOULD choose the addressing mode based on the nature of the content:
 
 A service MAY use [=simple addressing=] which enables the packager logic to be very simple. This simplicity comes at a cost of reduced applicability to multi-period scenarios and reduced client compatibility.
 
-Note: Future updates to [[!MPEGDASH]] are expected to eliminate the critical limitations of [=simple addressing=], enabling a wider range of applicable use cases.
+Note: Future updates to [[!DASH]] are expected to eliminate the critical limitations of [=simple addressing=], enabling a wider range of applicable use cases.
 
-Issue: Update to match [[!MPEGDASH]] 4th edition.
+Issue: Update to match [[!DASH]] 4th edition.
 
 [=Indexed addressing=] enables all data associated with a single [=representation=] to be stored in a single CMAF track file from which byte ranges are served to clients to supply [=media segments=], the initialization segment and the index segment. This gives it some unique advantages:
 
@@ -37,7 +37,7 @@ Note: This addressing mode is sometimes called "SegmentBase" in other documents.
 
 Clauses in section only apply to [=representations=] that use [=indexed addressing=].
 
-Note: [[!MPEGDASH]] makes a distinction between "segment" (HTTP-addressable entity) and "subsegment" (byte range of an HTTP-addressable entity). This document does not make such a distinction and has no concept of subsegments. Usage of "segment" here matches the definition of CMAF segment [[!MPEGCMAF]].
+Note: [[!DASH]] makes a distinction between "segment" (HTTP-addressable entity) and "subsegment" (byte range of an HTTP-addressable entity). This document does not make such a distinction and has no concept of subsegments. Usage of "segment" here matches the definition of CMAF segment [[!CMAF]].
 
 <figure>
 	<img src="Images/Timing/IndexedAddressing.png" />
@@ -265,7 +265,7 @@ Note: See [[#representation-timing]] and [[#timing-mpd-updates-remove-content]] 
 
 ### Simple addressing ### {#addressing-simple}
 
-Issue: Once we have a specific `@earliestPresentationTime` proposal submitted to MPEG we need to update this section to match. See [#245](https://github.com/Dash-Industry-Forum/DASH-IF-IOP/issues/245). This is now done in [[!MPEGDASH]] 4th edition - need to synchronize this text.
+Issue: Once we have a specific `@earliestPresentationTime` proposal submitted to MPEG we need to update this section to match. See [#245](https://github.com/Dash-Industry-Forum/DASH-IF-IOP/issues/245). This is now done in [[!DASH]] 4th edition - need to synchronize this text.
 
 A representation that uses <dfn>simple addressing</dfn> consists of a set of [=media segments=] accessed via URLs constructed using a template defined in the [=MPD=], with the nominal time span covered by each [=media segment=] described in the [=MPD=].
 
@@ -323,7 +323,7 @@ The allowed deviation is defined as the maximum offset between the edges of the 
 
 Advisement: This allowed deviation does not relax any requirements that do not explicitly define an exception. For example, [=periods=] must still be covered with samples for their entire duration, which constrains the flexibility allowed for the first and last [=media segment=] in a [=period=].
 
-The deviation SHALL be no more than 50% of the nominal [=media segment=] duration and MAY be in either direction ([[!MPEGDASH]] 7.2.1).
+The deviation SHALL be no more than 50% of the nominal [=media segment=] duration and MAY be in either direction ([[!DASH]] 7.2.1).
 
 Note: This results in a maximum true duration of 200% (+50% outward extension on both edges) and a minimum true duration of 1 sample (-50% inward from both edges would result in 0 duration but empty [=media segments=] are not allowed).
 

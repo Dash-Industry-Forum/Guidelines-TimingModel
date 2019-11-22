@@ -12,14 +12,14 @@ If a **service provider** follows these requirements in a published DASH service
 
 If a **client implementer** follows the client-oriented requirements described in this document, the DASH client will play content conforming to this document provided that the client device media platform supports all features used by a particular DASH service (e.g. the codecs and DRM systems).
 
-This document uses statements of fact when describing normative requirements defined in referenced specifications such as [[!MPEGDASH]] and [[!MPEGCMAF]]. References are typically provided to indicate where the requirements are defined.
+This document uses statements of fact when describing normative requirements defined in referenced specifications such as [[!DASH]] and [[!CMAF]]. References are typically provided to indicate where the requirements are defined.
 
 [[!RFC2119]] statements (e.g. "SHALL", "SHOULD" and "MAY") are used when this document defines a new requirement or further constrains a requirement from a referenced document.
 
 <div class="example">
 Statement of fact:
 
-* A DASH presentation **is** a sequence of consecutive non-overlapping periods [[!MPEGDASH]].
+* A DASH presentation **is** a sequence of consecutive non-overlapping periods [[!DASH]].
 
 New or more constrained requirement:
 
@@ -43,11 +43,11 @@ Note that technologies included in this document and for which no test and confo
 
 # DASH and related standards # {#dash-is-important}
 
-DASH (dynamic adaptive streaming over HTTP) [[!MPEGDASH]] is a technology for adaptive media delivery. Initially published by ISO/IEC in April 2012, it has been continually updated, with the 4th edition published in 2020.
+DASH (dynamic adaptive streaming over HTTP) [[!DASH]] is a technology for adaptive media delivery. Initially published by ISO/IEC in April 2012, it has been continually updated, with the 4th edition published in 2020.
 
-CMAF (common media application format) [[!MPEGCMAF]] is a media container format based on ISO Base Media File Format [[!ISOBMFF]]. It defines data structures for media delivery compatible with DASH and other similar technologies such as [[HLS]]. Initially published by ISO/IEC in 2018, it has been updated in 2019 with the publishing of the 2nd edition.
+CMAF (common media application format) [[!CMAF]] is a media container format based on ISO Base Media File Format [[!ISOBMFF]]. It defines data structures for media delivery compatible with DASH and other similar technologies such as [[HLS]]. Initially published by ISO/IEC in 2018, it has been updated in 2019 with the publishing of the 2nd edition.
 
-This document is based on the 4th edition DASH [[!MPEGDASH]] and 2nd edition CMAF [[!MPEGCMAF]] specifications.
+This document is based on the 4th edition DASH [[!DASH]] and 2nd edition CMAF [[!CMAF]] specifications.
 
 DASH together with related standards and specifications is the foundation for an ecosystem of services and clients that work together to enable audio/video/text and related content to be presented to end-users.
 
@@ -56,7 +56,7 @@ DASH together with related standards and specifications is the foundation for an
 	<figcaption>This document connects DASH with international standards and industry specifications.</figcaption>
 </figure>
 
-[[!MPEGDASH]] defines a highly flexible set of building blocks that needs to be constrained to ensure interoperable behavior in common scenarios. The necessary media container constraints are largely defined by [[!MPEGCMAF]] and [[!DASH-CMAF]]. This document defines further constraints to limit DASH features to those that are considered appropriate for use in interoperable clients and services.
+[[!DASH]] defines a highly flexible set of building blocks that needs to be constrained to ensure interoperable behavior in common scenarios. The necessary media container constraints are largely defined by [[!CMAF]] and [[!DASH-CMAF]]. This document defines further constraints to limit DASH features to those that are considered appropriate for use in interoperable clients and services.
 
 Clients consuming DASH content will need to interact with the host device's media platform. The guidelines in this document assume that the media platform implements APIs that are equivalent to Media Source Extensions [[media-source]] and Encrypted Media Extensions [[encrypted-media]]. API level compatibility is not required but equivalent features are expected.
 
@@ -64,7 +64,7 @@ This document was generated in close coordination with [[DVB-DASH]]. The feature
 
 ## Structure of a DASH presentation ## {#what-is-dash}
 
-[[!MPEGDASH]] specifies the structure of a DASH <dfn>presentation</dfn>, which consists primarily of:
+[[!DASH]] specifies the structure of a DASH <dfn>presentation</dfn>, which consists primarily of:
 
 1. The manifest or <dfn>MPD</dfn>, which describes the content and how it can be accessed.
 1. Data containers that clients will download during playback of a [=presentation=] in order to obtain media samples.
@@ -74,13 +74,13 @@ This document was generated in close coordination with [[DVB-DASH]]. The feature
 	<figcaption>Relationships of primary DASH data structures and the standards they are defined in.</figcaption>
 </figure>
 
-The [=MPD=] is an XML file that follows a schema defined in [[!MPEGDASH]]. Various 3rd party extension points are defined in the XML schema. This document defines some extensions, as do other industry specifications.
+The [=MPD=] is an XML file that follows a schema defined in [[!DASH]]. Various 3rd party extension points are defined in the XML schema. This document defines some extensions, as do other industry specifications.
 
-[[!MPEGDASH]] defines two data container formats, one based on [[!ISOBMFF]] and the other [[!MPEG2TS]]. However, only the former is used in modern solutions. This document only supports services using the [[!ISOBMFF]] container format.
+[[!DASH]] defines two data container formats, one based on [[!ISOBMFF]] and the other [[!MPEG2TS]]. However, only the former is used in modern solutions. This document only supports services using the [[!ISOBMFF]] container format.
 
-[[!MPEGCMAF]] is a constrained media format based on [[!ISOBMFF]], specifically designed for adaptive streaming. This document requires the use of [[!MPEGCMAF]] compatible data containers. The requirements for the usage of CMAF with DASH are defined by [[!DASH-CMAF]].
+[[!CMAF]] is a constrained media format based on [[!ISOBMFF]], specifically designed for adaptive streaming. This document requires the use of [[!CMAF]] compatible data containers. The requirements for the usage of CMAF with DASH are defined by [[!DASH-CMAF]].
 
-Note: The relationship to [[!MPEGCMAF]] is constrained to the container format, as primarily expressed by [[!DASH-CMAF]]. In particular, there is no requirement to conform to [[!MPEGCMAF]] media profiles.
+Note: The relationship to [[!CMAF]] is constrained to the container format, as primarily expressed by [[!DASH-CMAF]]. In particular, there is no requirement to conform to [[!CMAF]] media profiles.
 
 The data container format defines the physical structure of the following components of a [=presentation=]:
 
@@ -98,8 +98,8 @@ Different documents often use different terms to refer to the same structural co
 	<table class="data">
 		<thead>
 			<tr>
-				<th>[[!MPEGDASH]]
-				<th>[[!MPEGCMAF]]
+				<th>[[!DASH]]
+				<th>[[!CMAF]]
 				<th>[[!ISOBMFF]]
 		<tbody>
 			<tr>
@@ -122,8 +122,8 @@ Different documents often use different terms to refer to the same structural co
 
 This document is intended to be a set of guidelines easily understood by solution designers and developers. It is not necessarily intended to inform media standard authors. In the interest of ease of understanding, some important adjustments in terminology are made compared to the underlying standards, described here.
 
-[[!MPEGDASH]] has the concept of "segment" (URL-addressable media object) and "subsegment" (byte range of URL-addressable media object), whereas [[!MPEGCMAF]] does not make such a distinction. This document uses [[!MPEGCMAF]] terminology, with the term "segment" in this document being equivalent to "CMAF segment". Accordingly, "segment" in this document may be equivalent to either "segment" or "subsegment" in [[!MPEGDASH]], depending on the [=addressing mode=] used.
+[[!DASH]] has the concept of "segment" (URL-addressable media object) and "subsegment" (byte range of URL-addressable media object), whereas [[!CMAF]] does not make such a distinction. This document uses [[!CMAF]] terminology, with the term "segment" in this document being equivalent to "CMAF segment". Accordingly, "segment" in this document may be equivalent to either "segment" or "subsegment" in [[!DASH]], depending on the [=addressing mode=] used.
 
-This document's concept of the [=MPD timeline=] is not directly expressed in [[!MPEGDASH]]. To improve understandability of the timing model, this document splits the DASH concept of "presentation timeline" ([[!MPEGDASH]] 7.2.1) into two separate concepts: the aggregated component ([=MPD timeline=]) and the [=representation=] specific component ([=sample timeline=]).
+This document's concept of the [=MPD timeline=] is not directly expressed in [[!DASH]]. To improve understandability of the timing model, this document splits the DASH concept of "presentation timeline" ([[!DASH]] 7.2.1) into two separate concepts: the aggregated component ([=MPD timeline=]) and the [=representation=] specific component ([=sample timeline=]).
 
-[[!MPEGDASH]] uses "representation" to refer to a set of files and associated metadata, with the same "representation" possibly used in different parts of a DASH [=presentation=] and/or in different [=presentations=]. This document uses [=representation=] to refer to an individual instance of a [[!MPEGDASH]] "representation" - a set of data in an [=MPD=] that references some files containing media samples. Using the same files in two places effecticely means using two [=representations=], whereas in [[!MPEGDASH]] terminology it would be valid to call that a single [=representation=] used with individual conditions/caveats that apply to each usage. The deviation in terminology is intentional as it simplifies understanding and avoids having to juggle the two concepts (as the "shared" view is typically not relevant).
+[[!DASH]] uses "representation" to refer to a set of files and associated metadata, with the same "representation" possibly used in different parts of a DASH [=presentation=] and/or in different [=presentations=]. This document uses [=representation=] to refer to an individual instance of a [[!DASH]] "representation" - a set of data in an [=MPD=] that references some files containing media samples. Using the same files in two places effecticely means using two [=representations=], whereas in [[!DASH]] terminology it would be valid to call that a single [=representation=] used with individual conditions/caveats that apply to each usage. The deviation in terminology is intentional as it simplifies understanding and avoids having to juggle the two concepts (as the "shared" view is typically not relevant).

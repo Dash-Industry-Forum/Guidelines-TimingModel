@@ -1,8 +1,8 @@
 # Timing model # {#timing}
 
-The purpose of this chapter is to give a holistic overview of DASH [=presentation=] timing and segment addressing, explaining the existing building blocks and rules defined by [[!MPEGDASH]] and adding further constraints to achieve greater interoperability between DASH services and clients.
+The purpose of this chapter is to give a holistic overview of DASH [=presentation=] timing and segment addressing, explaining the existing building blocks and rules defined by [[!DASH]] and adding further constraints to achieve greater interoperability between DASH services and clients.
 
-[[!MPEGDASH]] 4.3 and 7.2.1 define the high-level structure and timing concepts of DASH. The DASH-IF implementation guidelines allow considerably less flexibility in timing than provided by [[!MPEGDASH]], constraining services to a specific set of reasonably flexible behaviors that are highly interoperable with modern client platforms.
+[[!DASH]] 4.3 and 7.2.1 define the high-level structure and timing concepts of DASH. The DASH-IF implementation guidelines allow considerably less flexibility in timing than provided by [[!DASH]], constraining services to a specific set of reasonably flexible behaviors that are highly interoperable with modern client platforms.
 
 This document defines an interoperable timing model and documents segment addressing logic suitable for interoperable use cases. Alternative interpretations of DASH timing may be equally valid from a standards conformance viewpoint.
 
@@ -10,7 +10,7 @@ This document defines an interoperable timing model and documents segment addres
 
 The [=MPD=] defines the <dfn>MPD timeline</dfn> of a DASH [=presentation=], which serves as the baseline for all scheduling decisions made during playback and establishes the relative timing of [=periods=] and [=media segments=]. The [=MPD timeline=] informs DASH clients on when it can download and present which [=media segments=]. The contents of an [=MPD=] are a promise by a DASH service to make specific [=media segments=] [=available=] during specific time spans described by the [=MPD timeline=].
 
-Advisement: Understand the difference between the [=MPD timeline=] and the [[!MPEGDASH]] "presentation timeline". See [[#confusing-terms]].
+Advisement: Understand the difference between the [=MPD timeline=] and the [[!DASH]] "presentation timeline". See [[#confusing-terms]].
 
 Values on the [=MPD timeline=] are all ultimately relative to the zero point of the [=MPD timeline=], though possibly through several layers of indirection (e.g. period A is relative to period B, which is relative to the zero point).
 
@@ -29,14 +29,14 @@ The following [=MPD=] elements are most relevant to locating and scheduling the 
 
 ## Presentation timing characteristics ## {#timing-and-presentation-types}
 
-There exist two types of DASH [=presentations=], indicated by `MPD@type` [[!MPEGDASH]]:
+There exist two types of DASH [=presentations=], indicated by `MPD@type` [[!DASH]]:
 
 * In a a <dfn>static presentation</dfn> (`MPD@type="static"`) any [=media segment=] may be presented at any time. The DASH client is in complete control over what content is presented when and the entire [=presentation=] is [=available=] at any time.
 * In a <dfn>dynamic presentation</dfn> (`MPD@type="dynamic"`) the [=MPD timeline=] is mapped to [=wall clock=] time, with each [=media segment=] on the [=MPD timeline=] intended to be presented at a specific moment in time (with some client-chosen [=time shift=] allowed).
 	* Furthermore, [=media segments=] may become [=available=] and cease to be [=available=] with the passage of time.
 	* [[#timing-mpd-updates|The MPD may change over time]], enabling the structure of the [=presentation=] to change over time (e.g. when a new title in the [=presentation=] is offered with a different set of languages).
 
-In a [=dynamic presentation=], the zero point of the [=MPD timeline=] is mapped to the point in [=wall clock=] time indicated by `MPD@availabilityStartTime` ([[!MPEGDASH]] 5.3.9.5). This allows a [=wall clock=] time to be associated with each [=media segment=], indicating the moment the [=media segment=] is intended to be presented.
+In a [=dynamic presentation=], the zero point of the [=MPD timeline=] is mapped to the point in [=wall clock=] time indicated by `MPD@availabilityStartTime` ([[!DASH]] 5.3.9.5). This allows a [=wall clock=] time to be associated with each [=media segment=], indicating the moment the [=media segment=] is intended to be presented.
 
 `MPD@mediaPresentationDuration` MAY be present in an [=MPD=]. If present, it SHALL accurately match the duration between the zero point on the [=MPD timeline=] and the end of the last [=period=], including the duration of any XLink [=periods=]. Clients SHALL calculate the total duration of a [=static presentation=] by adding up the durations of each [=period=] and SHALL NOT rely on the presence of `MPD@mediaPresentationDuration`.
 
@@ -44,7 +44,7 @@ Note: This calculation is necessary because the durations of XLink [=periods=] c
 
 ## Period timing ## {#period-timing}
 
-An [=MPD=] defines an ordered list of one or more consecutive non-overlapping <dfn>periods</dfn> ([[!MPEGDASH]] 5.3.2). A [=period=] is both a time span on the [=MPD timeline=] and a definition of the data to be presented during this time span. [=Period=] timing is relative to the zero point of the [=MPD timeline=], though often indirectly (being relative to the previous [=period=]).
+An [=MPD=] defines an ordered list of one or more consecutive non-overlapping <dfn>periods</dfn> ([[!DASH]] 5.3.2). A [=period=] is both a time span on the [=MPD timeline=] and a definition of the data to be presented during this time span. [=Period=] timing is relative to the zero point of the [=MPD timeline=], though often indirectly (being relative to the previous [=period=]).
 
 <figure>
 	<img src="Images/Timing/PeriodsMakeTheMpd.png" />
@@ -95,9 +95,9 @@ Note: A [=period=] with an unlimited duration can be converted to fixed duration
 
 ## Representation timing ## {#representation-timing}
 
-<dfn>Representations</dfn> provide the content for [=periods=]. A [=representation=] is a sequence of [=media segments=], an initialization segment, an optional index segment and related metadata ([[!MPEGDASH]] 5.3.1 and 5.3.5).
+<dfn>Representations</dfn> provide the content for [=periods=]. A [=representation=] is a sequence of [=media segments=], an initialization segment, an optional index segment and related metadata ([[!DASH]] 5.3.1 and 5.3.5).
 
-Advisement: [[!MPEGDASH]] affords the term "representation" a slightly different meaning. See [[#confusing-terms]].
+Advisement: [[!DASH]] affords the term "representation" a slightly different meaning. See [[#confusing-terms]].
 
 The [=MPD=] describes each [=representation=] using a `Representation` element. For each [=representation=], the [=MPD=] defines a set of <dfn>segment references</dfn> to the [=media segments=] and metadata describing the media samples provided by the [=representation=]. The [=segment references=] and much of the metadata are shared by all [=representations=] in the same adaptation set.
 
@@ -107,9 +107,9 @@ Issue: Insert illustrative MPD example here.
 
 ### Sample timeline ### {#timing-sampletimeline}
 
-The samples within a [=representation=] exist on a linear <dfn>sample timeline</dfn> defined by the encoder that created the samples. [=Sample timelines=] are mapped onto the [=MPD timeline=] by metadata stored in or referenced by the [=MPD=] ([[!MPEGDASH]] 7.3.2).
+The samples within a [=representation=] exist on a linear <dfn>sample timeline</dfn> defined by the encoder that created the samples. [=Sample timelines=] are mapped onto the [=MPD timeline=] by metadata stored in or referenced by the [=MPD=] ([[!DASH]] 7.3.2).
 
-Advisement: Understand the difference between the [=sample timeline=] and the [[!MPEGDASH]] "presentation timeline". See [[#confusing-terms]].
+Advisement: Understand the difference between the [=sample timeline=] and the [[!DASH]] "presentation timeline". See [[#confusing-terms]].
 
 <figure>
 	<img src="Images/Timing/TimelineAlignment.png" />
@@ -122,18 +122,18 @@ The same [=sample timeline=] is shared by all [=representations=] in the same ad
 
 A [=sample timeline=] is linear - encoders are expected to use an appropriate [=timescale=] and sufficiently large timestamp fields to avoid any wrap-around. If wrap-around does occur, a new [=period=] must be started in order to establish a new [=sample timeline=].
 
-The [=sample timeline=] is formed after applying any [[!ISOBMFF]] edit lists ([[!MPEGDASH]] 7.3.2).
+The [=sample timeline=] is formed after applying any [[!ISOBMFF]] edit lists ([[!DASH]] 7.3.2).
 
-A [=sample timeline=] is measured in <dfn>timescale units</dfn> defined as a number of units per second ([[!MPEGDASH]] 5.3.9.2 and 5.3.9.6). This value (the <dfn>timescale</dfn>) SHALL be present in the MPD as `SegmentTemplate@timescale` or `SegmentBase@timescale` (depending on the [=addressing mode=]).
+A [=sample timeline=] is measured in <dfn>timescale units</dfn> defined as a number of units per second ([[!DASH]] 5.3.9.2 and 5.3.9.6). This value (the <dfn>timescale</dfn>) SHALL be present in the MPD as `SegmentTemplate@timescale` or `SegmentBase@timescale` (depending on the [=addressing mode=]).
 
-Note: While optional in [[!MPEGDASH]], the presence of the `@timescale` attribute is required by the interoperable timing model because the default value of 1 is unlikely to match any real-world content and is far more likely to indicate an unintentional content authoring error.
+Note: While optional in [[!DASH]], the presence of the `@timescale` attribute is required by the interoperable timing model because the default value of 1 is unlikely to match any real-world content and is far more likely to indicate an unintentional content authoring error.
 
 <figure>
 	<img src="Images/Timing/PresentationTimeOffset.png" />
 	<figcaption>`@presentationTimeOffset` is the key component in establishing the relationship between the [=MPD timeline=] and a [=sample timeline=].</figcaption>
 </figure>
 
-The zero point of a [=sample timeline=] may be at the start of the [=period=] or at any earlier point. The point on the [=sample timeline=] indicated by `@presentationTimeOffset` is equivalent to the [=period=] start point on the [=MPD timeline=] ([[!MPEGDASH]] 5.3.9.2). The value is provided by `SegmentTemplate@presentationTimeOffset` or `SegmentBase@presentationTimeOffset`, depending on the [=addressing mode=], and has a default value of 0 [=timescale units=].
+The zero point of a [=sample timeline=] may be at the start of the [=period=] or at any earlier point. The point on the [=sample timeline=] indicated by `@presentationTimeOffset` is equivalent to the [=period=] start point on the [=MPD timeline=] ([[!DASH]] 5.3.9.2). The value is provided by `SegmentTemplate@presentationTimeOffset` or `SegmentBase@presentationTimeOffset`, depending on the [=addressing mode=], and has a default value of 0 [=timescale units=].
 
 Note: To transform a [=sample timeline=] position `SampleTime` to an [=MPD timeline=] position, use the formula `MpdTime = Period@start + (SampleTime - @presentationTimeOffset) / @timescale`.
 
@@ -184,7 +184,7 @@ In a [=dynamic presentation=], the [=MPD=] SHALL NOT contain [=unnecessary segme
 
 ### Alignment of periods and representations ### {#timing-period-representation-alignment}
 
-[=Media segment=] start/end points do not need to be aligned with [=period=] start/end points except when using [=simple addressing=] ([[!MPEGDASH]] 7.2.1). The general expectation is that only the content that falls within the [=period=] time span is presented by DASH clients. Allowing for overflow outside this time span ensures that [=periods=] can be easily started and ended at arbitrary positions on the [=MPD timeline=] without leaving gaps. Starting and ending [=periods=] is an editorial decision that is typically independent of the technical structure of the contents of the [=period=].
+[=Media segment=] start/end points do not need to be aligned with [=period=] start/end points except when using [=simple addressing=] ([[!DASH]] 7.2.1). The general expectation is that only the content that falls within the [=period=] time span is presented by DASH clients. Allowing for overflow outside this time span ensures that [=periods=] can be easily started and ended at arbitrary positions on the [=MPD timeline=] without leaving gaps. Starting and ending [=periods=] is an editorial decision that is typically independent of the technical structure of the contents of the [=period=].
 
 Issue: Integrate `@eptDelta`.
 
@@ -221,27 +221,27 @@ Of course, such after-the-fact corrective actions can disrupt the end-user exper
 
 A <dfn>media segment</dfn> is an HTTP-addressable data structure that contains media samples, referenced by an [=MPD=] via a [=segment reference=]. The structure of a [=media segment=] is that of a CMAF segment consisting of one or more CMAF fragments [[!DASH-CMAF]]. Different [=media segments=] may be different byte ranges accessed on the same URL.
 
-Advisement: The segment-related terminology in this document is aligned with [[!MPEGCMAF]] rather than [[!MPEGDASH]]. See [[#confusing-terms]] to better understand the differences.
+Advisement: The segment-related terminology in this document is aligned with [[!CMAF]] rather than [[!DASH]]. See [[#confusing-terms]] to better understand the differences.
 
-[=Media segments=] contain one or more consecutive media samples and consecutive [=media segments=] in the same [=representation=] contain consecutive media samples [[!MPEGCMAF]].
+[=Media segments=] contain one or more consecutive media samples and consecutive [=media segments=] in the same [=representation=] contain consecutive media samples [[!CMAF]].
 
-A [=media segment=] contains the media samples that exactly match the time span on the [=sample timeline=] assigned to the [=media segment=] by a [=segment reference=] ([[!MPEGDASH]] 7.2.1 and [[!DASH-CMAF]]), except when using [=simple addressing=] in which case a certain amount of inaccuracy may be present as defined in [[#addressing-simple-inaccuracy]].
+A [=media segment=] contains the media samples that exactly match the time span on the [=sample timeline=] assigned to the [=media segment=] by a [=segment reference=] ([[!DASH]] 7.2.1 and [[!DASH-CMAF]]), except when using [=simple addressing=] in which case a certain amount of inaccuracy may be present as defined in [[#addressing-simple-inaccuracy]].
 
 Advisement: All timing-related clauses in this document refer to the nominal timing described in the [=MPD=] unless otherwise noted.
 
 The <dfn>segment start point</dfn> is the point on the [=MPD timeline=] where the [=media segment=] starts according to the [=segment reference=] obtained from the [=MPD=]. The <dfn>segment end point</dfn> is the [=segment start point=] plus the [=media segment=] duration defined by the [=segment reference=].
 
-Note: In [[!MPEGDASH]] terminology, the [=segment start point=] is often equivalent to "earliest presentation time" of the [=media segment=]. However, this relation does not always hold true as "earliest presentation time" is defined in terms of media sample timing which is affected by the inaccuracy allowed under [=simple addressing=]. In contrast, the [=segment start point=] is always the nominal start point and is not affected by any potential timing inaccuracy.
+Note: In [[!DASH]] terminology, the [=segment start point=] is often equivalent to "earliest presentation time" of the [=media segment=]. However, this relation does not always hold true as "earliest presentation time" is defined in terms of media sample timing which is affected by the inaccuracy allowed under [=simple addressing=]. In contrast, the [=segment start point=] is always the nominal start point and is not affected by any potential timing inaccuracy.
 
-[=Media segments=] in different [=representations=] of the same adaptation set are aligned ([[!MPEGCMAF]] 7.3.4 and [[!DASH-CMAF]]). This means they contain media samples for the same time span on the [=sample timeline=]. This is true even if using [=simple addressing=] with [[#addressing-simple-inaccuracy|inaccurate media segment timing]]. That is, not only is the nominal timing aligned but so is the true media sample timing inside the [=media segments=].
+[=Media segments=] in different [=representations=] of the same adaptation set are aligned ([[!CMAF]] 7.3.4 and [[!DASH-CMAF]]). This means they contain media samples for the same time span on the [=sample timeline=]. This is true even if using [=simple addressing=] with [[#addressing-simple-inaccuracy|inaccurate media segment timing]]. That is, not only is the nominal timing aligned but so is the true media sample timing inside the [=media segments=].
 
 Issue: Illustrate what alignment means, especially with simple addressing.
 
 ## Period connectivity ## {#timing-connectivity}
 
-In certain circumstances content may be offered such that a [=representation=] is technically compatible with the content of a [=representation=] in a previous [=period=] ([[!MPEGDASH]] 5.3.2.4). Such [=representations=] are <dfn>period-connected</dfn>.
+In certain circumstances content may be offered such that a [=representation=] is technically compatible with the content of a [=representation=] in a previous [=period=] ([[!DASH]] 5.3.2.4). Such [=representations=] are <dfn>period-connected</dfn>.
 
-Initialization segments of [=period-connected=] [=representations=] are functionally equivalent ([[!MPEGDASH]] 5.3.2.4). That is, the initialization segment from any associated set of [=period-connected=] [=representations=] can be used to initialize playback of any [=period-connected=] [=representation=] in that set.
+Initialization segments of [=period-connected=] [=representations=] are functionally equivalent ([[!DASH]] 5.3.2.4). That is, the initialization segment from any associated set of [=period-connected=] [=representations=] can be used to initialize playback of any [=period-connected=] [=representation=] in that set.
 
 Note: Connectivity is typically achieved by using the same encoder to encode the content of multiple [=periods=] using the same settings. Keep in mind, however, that decryption is also a part of the client media pipeline - it is not only the codec parameters that are configured by the initialization segment; different decryption parameters are likely to break connectivity that would otherwise exist.
 
@@ -260,7 +260,7 @@ The [=sample timelines=] of [=period-connected=] [=representations=] MAY be mutu
 
 Note: Not all [=representations=] in an adaptation set need to be [=period-connected=]. For example, if a new [=period=] is introduced to add a [=representation=] that contains a new video quality level, all other [=representations=] will likely be connected but not the one that was added.
 
-The following signaling in the [=MPD=] indicates that two [=representations=] are [=period-connected=] across two [=periods=] ([[!MPEGDASH]] 5.3.2.4):
+The following signaling in the [=MPD=] indicates that two [=representations=] are [=period-connected=] across two [=periods=] ([[!DASH]] 5.3.2.4):
 
 * `Representation@id` is equal.
 * `AdaptationSet@id` is equal.
@@ -285,13 +285,13 @@ Note: The exact mechanism that ensures seamless playback depends on client capab
 
 ### Period continuity ### {#timing-continuity}
 
-In addition to [[#timing-connectivity|period connectivity]], [[!MPEGDASH]] 5.3.2.4 defines [=period=] continuity, which is a special case of [=period=] connectivity where the two samples on the boundary between the connected [=representations=] are consecutive on the same [=sample timeline=].
+In addition to [[#timing-connectivity|period connectivity]], [[!DASH]] 5.3.2.4 defines [=period=] continuity, which is a special case of [=period=] connectivity where the two samples on the boundary between the connected [=representations=] are consecutive on the same [=sample timeline=].
 
 Note: The above can only be true if the sample boundary exactly matches the [=period=] boundary. This cannot be expected to be generally true, as [=period=] boundaries are often an editorial decision independent of the sample layout.
 
 Period continuity MAY be signaled in the MPD when the above condition is met, in which case period connectivity SHALL NOT be simultaneously signaled on the same [=representation=]. Continuity implies connectivity.
 
-The signaling of period continuity is the same as for period connectivity, except that the value to use for `@schemeIdUri` is `urn:mpeg:dash:period-continuity:2015` ([[!MPEGDASH]] 5.3.2.4).
+The signaling of period continuity is the same as for period connectivity, except that the value to use for `@schemeIdUri` is `urn:mpeg:dash:period-continuity:2015` ([[!DASH]] 5.3.2.4).
 
 Clients MAY take advantage of any platform-specific optimizations for seamless playback that knowledge of [=period=] continuity enables; beyond that, clients SHALL treat continuity the same as connectivity.
 
@@ -335,9 +335,9 @@ It is critical to synchronize the clocks of the DASH client and service when usi
 
 The time indicated by the [=wall clock=] does not necessarily need to match some universal standard as long as the DASH client and service are mutually synchronized.
 
-Clock synchronization mechanisms are described by `UTCTiming` elements in the [=MPD=] ([[!MPEGDASH]] 5.8.4.11).
+Clock synchronization mechanisms are described by `UTCTiming` elements in the [=MPD=] ([[!DASH]] 5.8.4.11).
 
-The [=MPD=] of a [=dynamic presentation=] SHALL include at least one `UTCTiming` element that defines a clock synchronization mechanism. If multiple `UTCTiming` elements are listed, their order determines the order of preference [[!MPEGDASH]].
+The [=MPD=] of a [=dynamic presentation=] SHALL include at least one `UTCTiming` element that defines a clock synchronization mechanism. If multiple `UTCTiming` elements are listed, their order determines the order of preference [[!DASH]].
 
 A client presenting a [=dynamic presentation=] SHALL synchronize its local clock according to the `UTCTiming` elements in the [=MPD=] and SHALL emit a warning or error to application developers when clock synchronization fails, no `UTCTiming` elements are defined or none of the referenced clock synchronization mechanisms are supported by the client.
 
@@ -345,7 +345,7 @@ A DASH client SHALL NOT use a synchronization method that is not listed in the [
 
 Advisement: The use of a "default time source" by DASH clients is not allowed because this often obscures interoperability problems and introduces inconsistent behavior due to device clock differences.
 
-The set of time synchronization mechanisms SHALL be restricted to the following subset of schemes from among those defined in [[!MPEGDASH]] 5.8.5.7:
+The set of time synchronization mechanisms SHALL be restricted to the following subset of schemes from among those defined in [[!DASH]] 5.8.5.7:
 
 	* `urn:mpeg:dash:utc:http-xsdate:2014`
 	* `urn:mpeg:dash:utc:http-iso:2014`
@@ -356,7 +356,7 @@ Issue: We could benefit from some detailed examples here, especially as clock sy
 
 ### Availability ### {#timing-availability}
 
-A [=media segment=] is <dfn>available</dfn> when an HTTP request to acquire the [=media segment=] can be started and successfully performed to completion by a client ([[!MPEGDASH]] 3.1.6). During playback of a [=dynamic presentation=], new [=media segments=] continuously become [=available=] and stop being [=available=] with the passage of time.
+A [=media segment=] is <dfn>available</dfn> when an HTTP request to acquire the [=media segment=] can be started and successfully performed to completion by a client ([[!DASH]] 3.1.6). During playback of a [=dynamic presentation=], new [=media segments=] continuously become [=available=] and stop being [=available=] with the passage of time.
 
 An <dfn>availability window</dfn> is a time span on the [=MPD timeline=] that determines which [=media segments=] clients can expect to be [=available=]. Each [=representation=] has its own [=availability window=].
 
@@ -377,13 +377,13 @@ The [=availability window=] is calculated as follows:
 
 </div>
 
-[=Media segments=] that have their [=segment end point=] inside or at the end of the [=availability window=] are [=available=] [[!MPEGDASH]].
+[=Media segments=] that have their [=segment end point=] inside or at the end of the [=availability window=] are [=available=] [[!DASH]].
 
-Note: [[!MPEGDASH]] 4.3 and 5.3.9 define "segment availability time" of a segment as the span of [=wall clock=] time during which that [=media segment=] is available. Consequently, the [=availability window=] at each moment is **approximately** equivalent to the union of "segment availability times" of all [=available=] [=media segments=] at that moment.
+Note: [[!DASH]] 4.3 and 5.3.9 define "segment availability time" of a segment as the span of [=wall clock=] time during which that [=media segment=] is available. Consequently, the [=availability window=] at each moment is **approximately** equivalent to the union of "segment availability times" of all [=available=] [=media segments=] at that moment.
 
 Issue: Illustrate the approximate equivalence with a diagram if it feels important enough (hard to understand otherwise but not sure how necessary).
 
-Advisement: It is the responsibility of the DASH service to ensure that [=media segments=] are [=available=] to clients when they are described as [=available=] by the [=MPD=] [[!MPEGDASH]]. Keep in mind that the criterium for availability is a successful download by clients, not successful publishing from a packager.
+Advisement: It is the responsibility of the DASH service to ensure that [=media segments=] are [=available=] to clients when they are described as [=available=] by the [=MPD=] [[!DASH]]. Keep in mind that the criterium for availability is a successful download by clients, not successful publishing from a packager.
 
 Clients MAY at any point attempt to acquire any [=media segments=] that the [=MPD=] signals as [=available=]. Clients SHALL NOT attempt to acquire [=media segments=] that the [=MPD=] does not signal as [=available=].
 
@@ -436,7 +436,7 @@ The information required to calculate an optimal [=presentation delay=] might no
 
 Note: As different clients might use different algorithms for calculating the presentation delay, providing `MPD@suggestedPresentationDelay` enables services to roughly synchronize the playback start position of clients.
 
-Advisement: A common error in DASH content authoring is to attempt to use `MPD@minBufferTime` to control the [=presentation delay=]. `MPD@minBufferTime` is not related to [=presentation delay=] and merely describes the allowed jitter in content encoding ([[!MPEGDASH]] 5.3.5.2), as determined by the encoder or derived from the encoder configuration.
+Advisement: A common error in DASH content authoring is to attempt to use `MPD@minBufferTime` to control the [=presentation delay=]. `MPD@minBufferTime` is not related to [=presentation delay=] and merely describes the allowed jitter in content encoding ([[!DASH]] 5.3.5.2), as determined by the encoder or derived from the encoder configuration.
 
 The <dfn>effective time shift buffer</dfn> is the time span from the start of the [=time shift buffer=] to `now - PresentationDelay`. Services SHALL NOT define a value for `MPD@suggestedPresentationDelay` that results in an [=effective time shift buffer=] of negative or zero duration.
 
@@ -461,7 +461,7 @@ Some common reasons to make changes in the [=MPDs=] of [=dynamic presentations=]
 * Removing `MPD@minimumUpdatePeriod` to signal that [=MPD=] will no longer be updated.
 * Converting the [=presentation=] to a [=static presentation=] to signal that a live service has become available on-demand as a recording.
 
-[[!MPEGDASH]] 5.4.1 defines various constraints for [=MPD=] updates, most importantly:
+[[!DASH]] 5.4.1 defines various constraints for [=MPD=] updates, most importantly:
 
 * `MPD@id` does not change.
 * `MPD.Location` does not change.
@@ -486,9 +486,9 @@ It will take some time for each [=MPD=] update to reach clients, both due to the
 
 #### MPD snapshot validity #### {#timing-mpd-mup}
 
-The [=MPD=] of a [=dynamic presentation=] remains valid not only at its moment of initial publishing but through the entire <dfn>MPD validity duration</dfn>, which is a time span of duration `MPD@minimumUpdatePeriod` starting from the moment the [=MPD=] download is started by a client ([[!MPEGDASH]] 5.4.1).
+The [=MPD=] of a [=dynamic presentation=] remains valid not only at its moment of initial publishing but through the entire <dfn>MPD validity duration</dfn>, which is a time span of duration `MPD@minimumUpdatePeriod` starting from the moment the [=MPD=] download is started by a client ([[!DASH]] 5.4.1).
 
-Validity means that the [=MPD=] remains in conformance to all requirements defined by [[!MPEGDASH]] and this document. For example, any [=MPD=] of a [=dynamic presentation=] must include enough [=segment references=] to cover a time span of `MPD@minimumUpdatePeriod` into the future, in addition to the [=segment references=] that would ordinarily be expected at time of initial download. See also [[#necessary-references-dynamic]].
+Validity means that the [=MPD=] remains in conformance to all requirements defined by [[!DASH]] and this document. For example, any [=MPD=] of a [=dynamic presentation=] must include enough [=segment references=] to cover a time span of `MPD@minimumUpdatePeriod` into the future, in addition to the [=segment references=] that would ordinarily be expected at time of initial download. See also [[#necessary-references-dynamic]].
 
 Clients SHALL process state changes that occur during the [=MPD validity duration=]. For example new [=media segments=] will become [=available=] over time if they are referenced by the [=MPD=] and old ones become unavailable, even without downloading a new snapshot of the [=MPD=].
 
@@ -502,11 +502,11 @@ The presence or absence of `MPD@minimumUpdatePeriod` SHALL be used by DASH servi
 	* One typical use case is to combine this with an infinite sequence of [=segment references=], defining a [=presentation=] that never ends and never changes.
 	* Another use case is using a [=dynamic presentation=] to schedule the presentation of pre-prepared finite content for a specific time span of [=wall clock=] time.
 
-The `MPD@minimumUpdatePeriod` mechanism for defining the [=MPD validity duration=] MAY be combined with in-band [=MPD=] validity update events ([[!MPEGDASH]] 5.10.4.2) that can change the validity duration after the [=MPD=] is processed.
+The `MPD@minimumUpdatePeriod` mechanism for defining the [=MPD validity duration=] MAY be combined with in-band [=MPD=] validity update events ([[!DASH]] 5.10.4.2) that can change the validity duration after the [=MPD=] is processed.
 
 #### Adding content to the MPD #### {#timing-mpd-updates-add-content}
 
-[[!MPEGDASH]] allows the following mechanisms for adding content:
+[[!DASH]] allows the following mechanisms for adding content:
 
 * Additional [=segment references=] may be added to the last [=period=].
 * Additional [=periods=] may be added to the end of the MPD.
@@ -526,7 +526,7 @@ When using [=simple addressing=] or [=explicit addressing=], it is possible for 
 
 #### Removing content from the MPD #### {#timing-mpd-updates-remove-content}
 
-[[!MPEGDASH]] allows the following mechanisms for removing content:
+[[!DASH]] allows the following mechanisms for removing content:
 
 * The last [=period=] may change from unlimited duration to fixed duration.
 * The duration of the last [=period=] may be shortened.
@@ -598,7 +598,7 @@ Clients presenting [=dynamic presentations=] SHALL execute the following [=MPD=]
 
 Note: There is no requirement that clients poll for updates at `MPD@minimumUpdatePeriod` interval. They can do so as often or as rarely as they wish - this attribute simply defines the [=MPD validity duration=].
 
-Services MAY publish in-band events ([[!MPEGDASH]] 5.10.4.2) to explicitly signal MPD validity instead of expecting clients to regularly refresh on their own initiative. This enables finer control by the service but might not be supported by all clients.
+Services MAY publish in-band events ([[!DASH]] 5.10.4.2) to explicitly signal MPD validity instead of expecting clients to regularly refresh on their own initiative. This enables finer control by the service but might not be supported by all clients.
 
 Services SHALL NOT require clients to support in-band events - they are an optional optimization mechanism to allow clients to reduce HTTP traffic caused by fetching new [=MPD=] snapshots.
 
@@ -633,7 +633,7 @@ Parts of the [=MPD=] structure that are not relevant for this chapter have been 
 
 ## Forbidden techniques ## {#timing-nonos}
 
-Some aspects of [[!MPEGDASH]] are not compatible with the interoperable timing model defined in this document. In the interest of clarity, they are explicitly listed here:
+Some aspects of [[!DASH]] are not compatible with the interoperable timing model defined in this document. In the interest of clarity, they are explicitly listed here:
 
 * The `@presentationDuration` attribute SHALL NOT be used. This information serves no purpose under the interoperable timing model.
 * The `@availabilityTimeComplete` attribute SHALL NOT be used. The concept of "incomplete but available" [=media segments=] that this attribute enables is not part of the interoperable timing model.
