@@ -1,10 +1,10 @@
 ## Segment addressing modes ## {#addressing}
 
-This section defines the <dfn>addressing modes</dfn> that can be used for referencing [=media segments=], [=initialization segments=] and [=index segments=] in interopreable DASH presentations.
+This section defines the <dfn>addressing modes</dfn> that can be used for referencing [=media segments=], initialization segments and index segments in interopreable DASH presentations.
 
 [=Addressing modes=] not defined in this chapter SHALL NOT be used by DASH services. Clients SHOULD support all [=addressing modes=] defined in this chapter.
 
-All [=representations=] in the same [=adaptation set=] SHALL use the same [=addressing mode=]. [=Representations=] in different [=adaptation sets=] MAY use different [=addressing modes=]. [[#timing-connectivity|Period-connected representations]] SHALL use the same [=addressing mode=] in every [=period=].
+All [=representations=] in the same adaptation set SHALL use the same [=addressing mode=]. [=Representations=] in different adaptation sets MAY use different [=addressing modes=]. [[#timing-connectivity|Period-connected representations]] SHALL use the same [=addressing mode=] in every [=period=].
 
 You SHOULD choose the addressing mode based on the nature of the content:
 
@@ -24,14 +24,14 @@ Note: Future updates to [[!MPEGDASH]] are expected to eliminate the critical lim
 
 Issue: Update to match [[!MPEGDASH]] 4th edition.
 
-[=Indexed addressing=] enables all data associated with a single [=representation=] to be stored in a single [=CMAF track file=] from which byte ranges are served to clients to supply [=media segments=], the [=initialization segment=] and the [=index segment=]. This gives it some unique advantages:
+[=Indexed addressing=] enables all data associated with a single [=representation=] to be stored in a single CMAF track file from which byte ranges are served to clients to supply [=media segments=], the initialization segment and the index segment. This gives it some unique advantages:
 
 * A single large file is more efficient to transfer and cache than 100 000 or more small files, reducing computational and I/O overhead.
 * CDNs are aware of the nature of byte-range requests and can preemptively read-ahead to fill the cache ahead of playback.
 
 ### Indexed addressing ### {#addressing-indexed}
 
-A representation that uses <dfn>indexed addressing</dfn> consists of a [=CMAF track file=] containing an [=index segment=], an [=initialization segment=] and a sequence of [=media segments=].
+A representation that uses <dfn>indexed addressing</dfn> consists of a CMAF track file containing an index segment, an initialization segment and a sequence of [=media segments=].
 
 Note: This addressing mode is sometimes called "SegmentBase" in other documents.
 
@@ -41,25 +41,25 @@ Note: [[!MPEGDASH]] makes a distinction between "segment" (HTTP-addressable enti
 
 <figure>
 	<img src="Images/Timing/IndexedAddressing.png" />
-	<figcaption>[=Indexed addressing=] is based on an [=index segment=] that references all [=media segments=].</figcaption>
+	<figcaption>[=Indexed addressing=] is based on an index segment that references all [=media segments=].</figcaption>
 </figure>
 
-The [=MPD=] defines the byte range in the [=CMAF track file=] that contains the [=index segment=]. The [=index segment=] informs the client of all the [=media segments=] that exist, the time spans they cover on the [=sample timeline=] and their byte ranges.
+The [=MPD=] defines the byte range in the CMAF track file that contains the index segment. The index segment informs the client of all the [=media segments=] that exist, the time spans they cover on the [=sample timeline=] and their byte ranges.
 
-Multiple [=representations=] SHALL NOT be stored in the same [=CMAF track file=] (i.e. no multiplexed [=representations=] are to be used).
+Multiple [=representations=] SHALL NOT be stored in the same CMAF track file (i.e. no multiplexed [=representations=] are to be used).
 
-At least one `Representation/BaseURL` element SHALL be present in the [=MPD=], containing a URL pointing to the [=CMAF track file=].
+At least one `Representation/BaseURL` element SHALL be present in the [=MPD=], containing a URL pointing to the CMAF track file.
 
-The `SegmentBase@indexRange` attribute SHALL be present in the [=MPD=]. The value of this attribute identifies the byte range of the [=index segment=] in the [=CMAF track file=]. The value is a `byte-range-spec` as defined in [[!RFC7233]], referencing a single range of bytes.
+The `SegmentBase@indexRange` attribute SHALL be present in the [=MPD=]. The value of this attribute identifies the byte range of the index segment in the CMAF track file. The value is a `byte-range-spec` as defined in [[!RFC7233]], referencing a single range of bytes.
 
-The `SegmentBase@timescale` attribute SHALL be present and its value SHALL match the value of the `timescale` field in the [=index segment=] (in the [[!ISOBMFF]] `sidx` box) and the value of the `timescale` field in the [=initialization segment=] (in the `tkhd` box [[!ISOBMFF]]).
+The `SegmentBase@timescale` attribute SHALL be present and its value SHALL match the value of the `timescale` field in the index segment (in the [[!ISOBMFF]] `sidx` box) and the value of the `timescale` field in the initialization segment (in the `tkhd` box [[!ISOBMFF]]).
 
-The `SegmentBase/Initialization@range` attribute SHALL identify the byte range of the initialization segment in the [=CMAF track file=]. The value is a `byte-range-spec` as defined in [[!RFC7233]], referencing a single range of bytes. The `Initialization@sourceURL` attribute SHALL NOT be used.
+The `SegmentBase/Initialization@range` attribute SHALL identify the byte range of the initialization segment in the CMAF track file. The value is a `byte-range-spec` as defined in [[!RFC7233]], referencing a single range of bytes. The `Initialization@sourceURL` attribute SHALL NOT be used.
 
 <div class="example">
 Below is an example of common usage of [=indexed addressing=].
 
-The example defines a [=timescale=] of 48000 units per second, with the [=period=] starting at position 8100 (or 0.16875 seconds) on the [=sample timeline=]. The client can use the [=index segment=] referenced by `indexRange` to determine where the [=media segment=] containing position 8100 (and all other [=media segments=]) can be found. The byte range of the [=initialization segment=] is also provided.
+The example defines a [=timescale=] of 48000 units per second, with the [=period=] starting at position 8100 (or 0.16875 seconds) on the [=sample timeline=]. The client can use the index segment referenced by `indexRange` to determine where the [=media segment=] containing position 8100 (and all other [=media segments=]) can be found. The byte range of the initialization segment is also provided.
 
 <xmp highlight="xml">
 <MPD xmlns="urn:mpeg:dash:schema:mpd:2011">
@@ -81,7 +81,7 @@ Parts of the [=MPD=] structure that are not relevant for this chapter have been 
 
 ### Structure of the index segment ### {#addressing-indexed-indexstructure}
 
-The [=index segment=] SHALL consist of a single Segment Index Box (`sidx`) as defined by [[!ISOBMFF]]. The field layout is as follows:
+The index segment SHALL consist of a single Segment Index Box (`sidx`) as defined by [[!ISOBMFF]]. The field layout is as follows:
 
 <xmp>
 aligned(8) class SegmentIndexBox extends FullBox('sidx', version, 0) {
@@ -124,10 +124,10 @@ The values of the fields are determined as follows:
 :: The start timestamp of the first [=media segment=] on the [=sample timeline=], in [=timescale units=].
 
 : `first_offset`
-:: Distance from the end of the [=index segment=] to the first [=media segment=], in bytes. For example, 0 indicates that the first [=media segment=] immediately follows the [=index segment=].
+:: Distance from the end of the index segment to the first [=media segment=], in bytes. For example, 0 indicates that the first [=media segment=] immediately follows the index segment.
 
 : `reference_count`
-:: Total number of [=media segments=] referenced by the [=index segment=].
+:: Total number of [=media segments=] referenced by the index segment.
 
 : `reference_type`
 :: `0`
@@ -183,7 +183,7 @@ The value of `S@r` is nonnegative, except for the last `S` element which MAY hav
 
 [[#timing-mpd-updates|Updates to a dynamic MPD]] MAY add more `S` elements, remove expired `S` elements, increment `SegmentTemplate@startNumber`, add the `S@t` attribute to the first `S` element or increase the value of `S@r` on the last `S` element but SHALL NOT otherwise modify existing `S` elements.
 
-The `SegmentTemplate@media` attribute SHALL contain the URL template for referencing [=media segments=], using either the `$Time$` or `$Number$` template variable to unique identify [=media segments=]. The `SegmentTemplate@initialization` attribute SHALL contain the URL template for referencing [=initialization segments=].
+The `SegmentTemplate@media` attribute SHALL contain the URL template for referencing [=media segments=], using either the `$Time$` or `$Number$` template variable to unique identify [=media segments=]. The `SegmentTemplate@initialization` attribute SHALL contain the URL template for referencing initialization segments.
 
 If using `$Number$` addressing, the number of the first segment reference is defined by `SegmentTemplate@startNumber` (default value 1). The `S@n` attribute SHALL NOT be used - segment numbers form a continuous sequence starting with `SegmentTemplate@startNumber`.
 
@@ -261,7 +261,7 @@ For [=representations=] that use [=explicit addressing=], perform the following 
 
 </div>
 
-Note: See [[#timing-representation]] and [[#timing-mpd-updates-remove-content]] to understand the constraints that apply to [=segment reference=] removal.
+Note: See [[#representation-timing]] and [[#timing-mpd-updates-remove-content]] to understand the constraints that apply to [=segment reference=] removal.
 
 ### Simple addressing ### {#addressing-simple}
 
@@ -323,7 +323,7 @@ The allowed deviation is defined as the maximum offset between the edges of the 
 
 Advisement: This allowed deviation does not relax any requirements that do not explicitly define an exception. For example, [=periods=] must still be covered with samples for their entire duration, which constrains the flexibility allowed for the first and last [=media segment=] in a [=period=].
 
-The deviation SHALL be no more than 50% of the nominal [=media segment=] duration and MAY be in either direction.
+The deviation SHALL be no more than 50% of the nominal [=media segment=] duration and MAY be in either direction ([[!MPEGDASH]] 7.2.1).
 
 Note: This results in a maximum true duration of 200% (+50% outward extension on both edges) and a minimum true duration of 1 sample (-50% inward from both edges would result in 0 duration but empty [=media segments=] are not allowed).
 

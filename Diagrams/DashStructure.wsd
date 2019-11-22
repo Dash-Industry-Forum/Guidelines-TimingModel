@@ -13,4 +13,6 @@
 [ISOBMFF] -up-> [ISOBMFF sidx] : Defines
 [MPEG CMAF] -> [ISOBMFF] : Based on
 
+[MPEG DASH] -down-> [MPEG CMAF] : Defines profile for
+
 @enduml

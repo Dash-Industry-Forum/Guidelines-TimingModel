@@ -4,20 +4,6 @@
 #include "22-Addressing.inc.md"
 #include "29-Misc.inc.md"
 
-# Externally defined terms # {#external-terms}
-
-: <dfn>adaptation set</dfn>
-:: See [[!MPEGDASH]]
-: <dfn>CMAF track file</dfn>
-:: See [[!MPEGCMAF]]
-: <dfn>index segment</dfn>
-:: See [[!MPEGDASH]]
-: <dfn>initialization segment</dfn>
-:: See [[!MPEGDASH]]
-: <dfn>supplemental property descriptor</dfn>
-:: See [[!MPEGDASH]]
-
-
 <!-- Document metadata follows. The below sections are used by the document compiler and are not directly visible. -->
 
 <pre class="metadata">

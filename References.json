@@ -4,8 +4,10 @@
         "title": "ATSC Standard: A/300:2017 “ATSC3.0 System”",
         "publisher": "ATSC"
     },
-    "MPEGDASHCMAFPROFILE": {
-        "title": "N18641 WD of ISO/IEC 23009-1 4th edition AMD 1 Client event and timed metadata processing",
-        "publisher": "ISO/IEC JTC1/SC29/WG11 MPEG"
+    "DASH-CMAF": {
+        "aliasOf": "iso23009-1-cdamd1"
+    },
+    "HLS": {
+        "aliasOf": "rfc8216"
     }
 }
