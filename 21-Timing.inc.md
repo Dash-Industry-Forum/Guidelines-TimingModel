@@ -10,8 +10,6 @@ This document defines an interoperable timing model and documents segment addres
 
 The [=MPD=] defines the <dfn>MPD timeline</dfn> of a DASH [=presentation=], which serves as the baseline for all scheduling decisions made during playback and establishes the relative timing of [=periods=] and [=media segments=]. The [=MPD timeline=] informs DASH clients on when it can download and present which [=media segments=]. The contents of an [=MPD=] are a promise by a DASH service to make specific [=media segments=] [=available=] during specific time spans described by the [=MPD timeline=].
 
-Advisement: Understand the difference between the [=MPD timeline=] and the [[!DASH]] "presentation timeline". See [[#confusing-terms]].
-
 Values on the [=MPD timeline=] are all ultimately relative to the zero point of the [=MPD timeline=], though possibly through several layers of indirection (e.g. period A is relative to period B, which is relative to the zero point).
 
 The ultimate purpose of the [=MPD=] is to enable the client to obtain media samples for playback. The [=MPD=] also provides the information required for a DASH client to dynamically switch between different bitrates of the same content (in different [=representations=]) to adapt to changing network conditions.
