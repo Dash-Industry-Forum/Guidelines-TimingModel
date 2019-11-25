@@ -2,7 +2,7 @@
 
 The purpose of this chapter is to give a holistic overview of DASH [=presentation=] timing and segment addressing, explaining the existing building blocks and rules defined by [[!DASH]] and adding further constraints to achieve greater interoperability between DASH services and clients.
 
-[[!DASH]] 4.3 and 7.2.1 define the high-level structure and timing concepts of DASH. The DASH-IF implementation guidelines allow considerably less flexibility in timing than provided by [[!DASH]], constraining services to a specific set of reasonably flexible behaviors that are highly interoperable with modern client platforms.
+[[!DASH]] 4.3 and 7.2.1 define the high-level structure and timing concepts of DASH, with [[!DASH-CMAF]] further relating them to [[!CMAF]] concepts. The DASH-IF implementation guidelines allow considerably less flexibility in timing than provided by [[!DASH]], constraining services to a specific set of reasonably flexible behaviors that are highly interoperable with modern client platforms.
 
 This document defines an interoperable timing model and documents segment addressing logic suitable for interoperable use cases. Alternative interpretations of DASH timing may be equally valid from a standards conformance viewpoint.
 
@@ -243,7 +243,7 @@ Advisement: The segment-related terminology in this document is aligned with [[!
 
 A [=media segment=] contains the media samples that exactly match the time span on the [=sample timeline=] assigned to the [=media segment=] by a [=segment reference=] ([[!DASH]] 7.2.1 and [[!DASH-CMAF]]), except when using [=simple addressing=] in which case a certain amount of inaccuracy may be present as defined in [[#addressing-simple-inaccuracy]].
 
-Advisement: All timing-related clauses in this document refer to the nominal timing described in the [=MPD=] unless otherwise noted.
+Advisement: All timing-related clauses in this document refer to the nominal timing described in the [=MPD=] unless otherwise noted. DASH clients are expected to operate with nominal times in playback logic, even if the real values differ due to permitted amounts of inaccuracy.
 
 The <dfn>segment start point</dfn> is the point on the [=MPD timeline=] where the [=media segment=] starts according to the [=segment reference=] obtained from the [=MPD=]. The <dfn>segment end point</dfn> is the [=segment start point=] plus the [=media segment=] duration defined by the [=segment reference=].
 
