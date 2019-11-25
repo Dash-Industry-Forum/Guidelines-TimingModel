@@ -17,7 +17,7 @@ The ultimate purpose of the [=MPD=] is to enable the client to obtain media samp
 The following [=MPD=] elements are most relevant to locating and scheduling the media samples:
 
 1. The [=MPD=] describes consecutive [=periods=] which map data onto the [=MPD timeline=].
-1. Each [=period=] describes of one or more [=representations=], each of which provides media samples inside a sequence of [=media segments=] located via [=segment references=]. [=Representations=] contain independent [=sample timelines=] that are mapped to the [=MPD timeline=] via the [=period=].
+1. Each [=period=] describes of one or more [=representations=], each of which provides media samples inside a sequence of [=media segments=] located via [=segment references=]. [=Representations=] contain independent [=sample timelines=] that are mapped to the time span on the [=MPD timeline=] that belongs to the [=period=].
 1. [=Representations=] within a [=period=] are grouped into adaptation sets, which associate related [=representations=] and decorate them with metadata.
 
 <figure>
@@ -59,7 +59,7 @@ Common reasons for defining multiple [=periods=] are:
 * Updating period-scoped metadata (e.g. codec configuration or DRM signaling).
 
 <div class="example">
-The below [=MPD=] consists of two 20-second [=periods=]. The duration of the first [=period=] is calculated using the start point of the second [=period=]. The total duration of the presentation is 40 seconds.
+The below [=MPD=] consists of two 20-second [=periods=]. The duration of the first [=period=] is calculated using the start point of the second [=period=]. The total duration of the [=presentation=] is 40 seconds.
 
 <xmp highlight="xml">
 <MPD xmlns="urn:mpeg:dash:schema:mpd:2011" type="static">
@@ -89,25 +89,43 @@ In a [=dynamic presentation=], the first [=period=] SHALL start at or after the 
 
 In a [=dynamic presentation=], the last [=period=] MAY have a `Period@duration`, in which case it has a fixed duration. If without `Period@duration`, the last [=period=] in a [=dynamic presentation=] has an unlimited duration (that may later be shortened by an [=MPD=] update).
 
-Note: A [=period=] with an unlimited duration can be converted to fixed duration by an [=MPD=] update, so even a nominally unlimited duration is effectively constrained to the [=MPD validity duration=] of the current [=MPD=] snapshot.
+Note: A [=period=] with an unlimited duration can be converted to fixed duration by an [=MPD=] update, so even a nominally unlimited duration is effectively constrained by the [=MPD validity duration=] of the current [=MPD=] snapshot.
 
 ## Representation timing ## {#representation-timing}
 
 <dfn>Representations</dfn> provide the content for [=periods=]. A [=representation=] is a sequence of [=media segments=], an initialization segment, an optional index segment and related metadata ([[!DASH]] 5.3.1 and 5.3.5).
 
-Advisement: [[!DASH]] affords the term "representation" a slightly different meaning. See [[#confusing-terms]].
-
 The [=MPD=] describes each [=representation=] using a `Representation` element. For each [=representation=], the [=MPD=] defines a set of <dfn>segment references</dfn> to the [=media segments=] and metadata describing the media samples provided by the [=representation=]. The [=segment references=] and much of the metadata are shared by all [=representations=] in the same adaptation set.
 
 Each [=representation=] belongs to exactly one adaptation set and exactly one [=period=], although [[#timing-connectivity|a representation may be connected with a representation in another period]].
 
-Issue: Insert illustrative MPD example here.
+<div class="example">
+The below [=MPD=] consists of a single 20-second [=period=] with three video, one audio and one text [=representation=]. Each [=representations=] supplies the [=period=] with 20 seconds of media samples.
+
+<xmp highlight="xml">
+<MPD xmlns="urn:mpeg:dash:schema:mpd:2011" type="static">
+	<Period duration="PT20S">
+		<AdaptationSet>
+			<Representation id="1" mimeType="video/mp4" codecs="avc1.64001f" bandwidth="386437" />
+			<Representation id="2" mimeType="video/mp4" codecs="avc1.640028" bandwidth="1117074" />
+			<Representation id="3" mimeType="video/mp4" codecs="avc1.640033" bandwidth="2723012" />
+		</AdaptationSet>
+		<AdaptationSet lang="en">
+			<Representation id="4" mimeType="audio/mp4" codecs="mp4a.40.29" bandwidth="131351" />
+		</AdaptationSet>
+		<AdaptationSet lang="en-US">
+			<Representation id="5" mimeType="application/mp4" codecs="wvtt" bandwidth="428" />
+		</AdaptationSet>
+	</Period>
+</MPD>
+</xmp>
+
+Parts of the [=MPD=] structure that are not relevant for this chapter have been omitted - this is not a fully functional [=MPD=] file.
+</div>
 
 ### Sample timeline ### {#timing-sampletimeline}
 
 The samples within a [=representation=] exist on a linear <dfn>sample timeline</dfn> defined by the encoder that created the samples. [=Sample timelines=] are mapped onto the [=MPD timeline=] by metadata stored in or referenced by the [=MPD=] ([[!DASH]] 7.3.2).
-
-Advisement: Understand the difference between the [=sample timeline=] and the [[!DASH]] "presentation timeline". See [[#confusing-terms]].
 
 <figure>
 	<img src="Images/Timing/TimelineAlignment.png" />
@@ -232,8 +250,6 @@ The <dfn>segment start point</dfn> is the point on the [=MPD timeline=] where th
 Note: In [[!DASH]] terminology, the [=segment start point=] is often equivalent to "earliest presentation time" of the [=media segment=]. However, this relation does not always hold true as "earliest presentation time" is defined in terms of media sample timing which is affected by the inaccuracy allowed under [=simple addressing=]. In contrast, the [=segment start point=] is always the nominal start point and is not affected by any potential timing inaccuracy.
 
 [=Media segments=] in different [=representations=] of the same adaptation set are aligned ([[!CMAF]] 7.3.4 and [[!DASH-CMAF]]). This means they contain media samples for the same time span on the [=sample timeline=]. This is true even if using [=simple addressing=] with [[#addressing-simple-inaccuracy|inaccurate media segment timing]]. That is, not only is the nominal timing aligned but so is the true media sample timing inside the [=media segments=].
-
-Issue: Illustrate what alignment means, especially with simple addressing.
 
 ## Period connectivity ## {#timing-connectivity}
 
