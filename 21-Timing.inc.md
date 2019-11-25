@@ -374,7 +374,9 @@ Issue: We could benefit from some detailed examples here, especially as clock sy
 
 A [=media segment=] is <dfn>available</dfn> when an HTTP request to acquire the [=media segment=] can be started and successfully performed to completion by a client ([[!DASH]] 3.1.6). During playback of a [=dynamic presentation=], new [=media segments=] continuously become [=available=] and stop being [=available=] with the passage of time.
 
-An <dfn>availability window</dfn> is a time span on the [=MPD timeline=] that determines which [=media segments=] clients can expect to be [=available=]. Each [=representation=] has its own [=availability window=].
+An <dfn>availability window</dfn> is a time span on the [=MPD timeline=] that determines which [=media segments=] clients can expect to be [=available=].
+
+Each adaptation set has its own [=availability window=]. Services SHALL NOT define [=MPD=] attributes that affect the [=availability window=] on the [=representation=] level.
 
 <figure>
 	<img src="Images/Timing/AvailabilityWindow.png" />
@@ -388,7 +390,7 @@ The [=availability window=] is calculated as follows:
 1. Let <var>now</var> be the current wall clock time according to the [=wall clock=].
 1. Let <var>AvailabilityWindowStart</var> be <code><var>now</var> - MPD@timeShiftBufferDepth</code>.
 	* If `MPD@timeShiftBufferDepth` is not defined, let <var>AvailabilityWindowStart</var> be `MPD@availabilityStartTime`.
-1. Let <var>TotalAvailabilityTimeOffset</var> be the sum of all `@availabilityTimeOffset` values that apply to the [=representation=] (those directly on the `Representation` element and any of its ancestors).
+1. Let <var>TotalAvailabilityTimeOffset</var> be the sum of all `@availabilityTimeOffset` values that apply to the adaptation set (those directly on the `AdaptationSet` element and any of its ancestors).
 1. The [=availability window=] is the time span from <var>AvailabilityWindowStart</var> to <code><var>now</var> + <var>TotalAvailabilityTimeOffset</var></code>.
 
 </div>
@@ -553,7 +555,7 @@ Multiple content removal mechanisms MAY be combined in a single [=MPD=] update. 
 
 Advisement: Removal of content is only allowed if the content to be removed is expired or not yet [=available=] to clients and guaranteed not to become [=available=] within the [=MPD validity duration=] of any [=MPD=] snapshot potentially downloaded by clients.
 
-To determine the content that may be removed, calculate `EarliestRemovalPoint` as follows for each [=representation=]:
+To determine the content that may be removed, calculate `EarliestRemovalPoint` as follows for each adaptation set:
 
 <div class="algorithm">
 
@@ -563,7 +565,7 @@ To determine the content that may be removed, calculate `EarliestRemovalPoint` a
 
 </div>
 
-Note: As each [=representation=] has its own [=availability window=], so does each [=representation=] have its own `EarliestRemovalPoint`.
+Note: As each adaptation set has its own [=availability window=], so does each adaptation set have its own `EarliestRemovalPoint`.
 
 [=Media segments=] that overlap or end before `EarliestRemovalPoint` might be considered by clients to be [=available=] at the time the [=MPD=] update is processed. Therefore, an [=MPD=] update removing content SHALL NOT remove any [=segment references=] to [=media segments=] with a [=segment start point=] before or at `EarliestRemovalPoint`.
 
