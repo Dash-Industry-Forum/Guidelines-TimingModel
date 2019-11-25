@@ -653,6 +653,7 @@ Some aspects of [[!DASH]] are not compatible with the interoperable timing model
 
 * The `@presentationDuration` attribute SHALL NOT be used. This information serves no purpose under the interoperable timing model.
 * The `@availabilityTimeComplete` attribute SHALL NOT be used. The concept of "incomplete but available" [=media segments=] that this attribute enables is not part of the interoperable timing model.
+* There SHALL NOT be "missing content segments" ([[!DASH]] 6.2.6) in the content. If content is lost during processing, the expectation is that the encoder/packager will either replace it with valid dummy content (e.g. blank picture or silent audio) or start a new period that does not contain the [=representation=] that incurs data loss.
 
 ## Examples ## {#timing-examples}
 
