@@ -493,8 +493,11 @@ DASH-IF implementation guidelines further extend these constraints:
 * `MPD@availabilityStartTime` SHALL NOT change.
 * `Period@start` SHALL NOT change.
 * `Period@duration` SHALL NOT change except when explicitly allowed by other statements in this document.
+* `AdaptationSet@id` SHALL be present on every `AdaptationSet` element.
 * The set of adaptation sets present in an existing [=period=] (i.e. the set of `AdaptationSet@id` values) SHALL NOT change.
+* The relative order of `AdaptationSet` elements in a `Period` element SHALL NOT change.
 * The [=representations=] present in an existing adaptation set (i.e. the set of `Representation@id` values) SHALL NOT change.
+* The relative order of `Representation` elements in an `AdaptationSet` element SHALL NOT change.
 
 Additional restrictions on MPD updates are defined by other parts of this document.
 
