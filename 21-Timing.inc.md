@@ -268,7 +268,7 @@ The following signaling in the [=MPD=] indicates that two [=representations=] ar
 	* `@shemeIdUri` set to `urn:mpeg:dash:period-connectivity:2015`.
 	* `@value` set to the `Period@id` of the first period.
 
-### Segment reference duplication with period connectivity ### {#connectivity-duplicates}
+### Segment reference duplication during connected period transitions ### {#connectivity-duplicates}
 
 As a [=period=] may start and/or end in the middle of a [=media segment=], the same [=media segment=] may simultaneously be referenced by two [=period-connected=] [=representations=], with one part of it scheduled for playback during the first [=period=] and the other part during the second [=period=]. This is likely to be the case when no [=sample timeline=] discontinuity is introduced by the transition.
 
@@ -279,19 +279,21 @@ As a [=period=] may start and/or end in the middle of a [=media segment=], the s
 
 Clients SHOULD NOT present a [=media segment=] twice when it occurs on both sides of a [=period=] transition in a [=period-connected=] [=representation=].
 
-Clients SHOULD ensure seamless playback of [=period-connected=] [=representations=] in consecutive [=periods=].
+Clients SHOULD ensure seamless playback of [=period-connected=] [=representations=] in consecutive [=periods=]. Clients unable to ensure seamless playback MAY incur some amount of [=time shift=] at the [=period=] transition point provided that the resulting [=time shift=] is permitted by the timing model.
 
 Note: The exact mechanism that ensures seamless playback depends on client capabilities and will be implementation-specific. Any shared [=media segment=] overlapping the [=period=] boundary may need to be detected and deduplicated to avoid presenting it twice.
 
 ### Period continuity ### {#timing-continuity}
 
-In addition to [[#timing-connectivity|period connectivity]], [[!DASH]] 5.3.2.4 defines [=period=] continuity, which is a special case of [=period=] connectivity where the two samples on the boundary between the connected [=representations=] are consecutive on the same [=sample timeline=].
+In addition to [[#timing-connectivity|period connectivity]], [[!DASH]] 5.3.2.4 defines [=period=] continuity. Continuity is a special case of [=period=] connectivity that indicates no timeline discontinuity is present at the transition point between the media samples of the two continuous [=periods=]. Under continuity conditions, the client is expected to be able to continue seamless playback by merely appending [=media segments=] from the new [=period=], without any reconfiguration at the [=period=] boundary.
 
-Note: The above can only be true if the sample boundary exactly matches the [=period=] boundary. This cannot be expected to be generally true, as [=period=] boundaries are often an editorial decision independent of the sample layout.
+Continuity SHALL NOT be signaled if the first/last sample in the [=media segment=] on the [=period=] boundary does not exactly start/end on the [=period=] boundary. This cannot be expected to be generally true, as [=period=] boundaries are often an editorial decision independent of the [=media segment=] and sample layout.
 
-Period continuity MAY be signaled in the MPD when the above condition is met, in which case period connectivity SHALL NOT be simultaneously signaled on the same [=representation=]. Continuity implies connectivity.
+Note: This further constrains usage of continuity compared to [[!DASH]], which does not require the boundary samples to actually be the first/last sample in the [=media segment=]. However, that interpretation leaves room for incompatible implementations depending on how the client handles [[#connectivity-duplicates|deduplication of duplicate segments at period boundaries]] (which would be required under the rules of the interoperable timing model in order to not leave a gap).
 
-The signaling of period continuity is the same as for period connectivity, except that the value to use for `@schemeIdUri` is `urn:mpeg:dash:period-continuity:2015` ([[!DASH]] 5.3.2.4).
+[=Period=] continuity MAY be signaled in the MPD when the above condition is met, in which case period connectivity SHALL NOT be simultaneously signaled on the same [=representation=]. Continuity implies connectivity ([[!DASH]] 5.3.2.4).
+
+The signaling of [=period=] continuity is the same as for [=period=] connectivity, except that the value to use for `@schemeIdUri` is `urn:mpeg:dash:period-continuity:2015` ([[!DASH]] 5.3.2.4).
 
 Clients MAY take advantage of any platform-specific optimizations for seamless playback that knowledge of [=period=] continuity enables; beyond that, clients SHALL treat continuity the same as connectivity.
 
