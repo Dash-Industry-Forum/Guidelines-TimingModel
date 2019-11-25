@@ -120,7 +120,7 @@ Different documents often use different terms to refer to the same structural co
 
 ## Terminology choices in this document ## {#confusing-terms}
 
-This document is intended to be a set of guidelines easily understood by solution designers and developers. It is not necessarily intended to inform media standard authors. In the interest of ease of understanding, some important adjustments in terminology are made compared to the underlying standards, described here.
+This document is intended to be a set of guidelines easily understood by solution designers and developers. In the interest of ease of understanding, some important adjustments in terminology are made compared to the underlying standards, described here.
 
 [[!DASH]] has the concept of "segment" (URL-addressable media object) and "subsegment" (byte range of URL-addressable media object), whereas [[!CMAF]] does not make such a distinction. This document uses [[!CMAF]] terminology, with the term "segment" in this document being equivalent to "CMAF segment". Accordingly, "segment" in this document may be equivalent to either "segment" or "subsegment" in [[!DASH]], depending on the [=addressing mode=] used.
 
