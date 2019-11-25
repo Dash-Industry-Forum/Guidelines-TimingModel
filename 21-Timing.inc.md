@@ -200,9 +200,7 @@ In a [=dynamic presentation=], the [=MPD=] SHALL NOT contain [=unnecessary segme
 
 ### Alignment of periods and representations ### {#timing-period-representation-alignment}
 
-[=Media segment=] start/end points do not need to be aligned with [=period=] start/end points except when using [=simple addressing=] ([[!DASH]] 7.2.1). The general expectation is that only the content that falls within the [=period=] time span is presented by DASH clients. Allowing for overflow outside this time span ensures that [=periods=] can be easily started and ended at arbitrary positions on the [=MPD timeline=] without leaving gaps. Starting and ending [=periods=] is an editorial decision that is typically independent of the technical structure of the contents of the [=period=].
-
-Issue: Integrate `@eptDelta`.
+[=Segment start points=] and [=segment end points=] do not need to be aligned with [=period=] start/end points ([[!DASH]] 7.2.1). The general expectation is that only the content that falls within the [=period=] time span is presented by DASH clients. Allowing for overflow outside this time span ensures that [=periods=] can be easily started and ended at arbitrary positions on the [=MPD timeline=] without leaving gaps. Starting and ending [=periods=] is an editorial decision that is typically independent of the technical structure of the contents of the [=period=].
 
 <figure>
 	<img src="Images/Timing/SamplesOnPeriodBoundary.png" />
@@ -743,7 +741,7 @@ After splitting the example presentation, we arrive at the following structure.
 
 If [=indexed addressing=] is used, both [=periods=] will reference all segments as both [=periods=] will use the same unmodified index segment. Clients are expected to ignore [=media segments=] that fall outside the [=period=] bounds.
 
-Advisement: [=Simple addressing=] has significant limitations on alignment at [=period=] start, making it unsuitable for some multi-period scenarios. See [[#addressing-simple-startpoint]].
+Advisement: [=Simple addressing=] has significant limitations on alignment at [=period=] start, making it typically unsuitable for some multi-period scenarios. See [[#addressing-simple-startpoint]].
 
 Other [=periods=] (e.g. ads) may be inserted between the two [=periods=] resulting from the split. This does not affect the addressing and timing of the two [=periods=].
 

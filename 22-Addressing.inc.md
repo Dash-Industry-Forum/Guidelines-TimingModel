@@ -20,10 +20,6 @@ You SHOULD choose the addressing mode based on the nature of the content:
 
 A service MAY use [=simple addressing=] which enables the packager logic to be very simple. This simplicity comes at a cost of reduced applicability to multi-period scenarios and reduced client compatibility.
 
-Note: Future updates to [[!DASH]] are expected to eliminate the critical limitations of [=simple addressing=], enabling a wider range of applicable use cases.
-
-Issue: Update to match [[!DASH]] 4th edition.
-
 [=Indexed addressing=] enables all data associated with a single [=representation=] to be stored in a single CMAF track file from which byte ranges are served to clients to supply [=media segments=], the initialization segment and the index segment. This gives it some unique advantages:
 
 * A single large file is more efficient to transfer and cache than 100 000 or more small files, reducing computational and I/O overhead.
@@ -147,6 +143,8 @@ The values of the fields are determined as follows:
 : `SAP_delta_time`
 :: `0`
 
+Note: The normative definitions of the fields are provided by [[!ISOBMFF]]. This document describes how to determine the correct values, relating the fields to DASH specific concepts.
+
 Issue: We need to clarify how to determine the right value for `SAP_type`. [#235](https://github.com/Dash-Industry-Forum/DASH-IF-IOP/issues/235)
 
 #### Moving the period start point (indexed addressing) #### {#addressing-indexed-startpoint}
@@ -265,11 +263,9 @@ Note: See [[#representation-timing]] and [[#timing-mpd-updates-remove-content]] 
 
 ### Simple addressing ### {#addressing-simple}
 
-Issue: Once we have a specific `@earliestPresentationTime` proposal submitted to MPEG we need to update this section to match. See [#245](https://github.com/Dash-Industry-Forum/DASH-IF-IOP/issues/245). This is now done in [[!DASH]] 4th edition - need to synchronize this text.
-
 A representation that uses <dfn>simple addressing</dfn> consists of a set of [=media segments=] accessed via URLs constructed using a template defined in the [=MPD=], with the nominal time span covered by each [=media segment=] described in the [=MPD=].
 
-Advisement: [=Simple addressing=] defines the nominal time span of each [=media segment=] in the MPD. The true time span covered by samples within the [=media segment=] can be slightly different than the nominal time span. See [[#addressing-simple-inaccuracy]].
+Advisement: [=Simple addressing=] defines the nominal time span of each [=media segment=] in the [=MPD=]. The true time span covered by samples within the [=media segment=] can be slightly different than the nominal time span. See [[#addressing-simple-inaccuracy]].
 
 Note: This addressing mode is sometimes called "SegmentTemplate without SegmentTimeline" in other documents.
 
@@ -282,16 +278,24 @@ Clauses in section only apply to [=representations=] that use [=simple addressin
 
 The `SegmentTemplate@duration` attribute SHALL define the nominal duration of a [=media segment=] in [=timescale units=].
 
-The set of [=segment references=] SHALL consist of the first [=media segment=] starting exactly at the [=period=] start point and all other [=media segments=] following in a consecutive series of equal time spans of `SegmentTemplate@duration` [=timescale units=], ending with a [=media segment=] that ends at or overlaps the [=period=] end time.
+The set of [=segment references=] SHALL consist of the first [=media segment=] starting `SegmentTemplate@eptDelta` [=timescale units=] relative to the [=period=] start point and all other [=media segments=] following in a consecutive series of equal time spans of `SegmentTemplate@duration` [=timescale units=], ending with a [=media segment=] that ends at or overlaps the [=period=] end time.
+
+Note: `@eptDelta` is expressed as an offset from the [=period=] start point to the [=segment start point=] of the first [=media segment=]. In other words, the value will be negative if the first [=media segment=] starts before the [=period=] start point.
+
+Advisement: `@eptDelta` is new in [[!DASH]] 4th edition (published 2020) and DASH client support is not yet widespread. Clients that do not implement support for `@eptDelta` may experience faulty timing behavior and fail to correctly transition between [=periods=] that use [=simple addressing=]. If the client cannot be upgraded to consider `@eptDelta` then you are advised to use [=explicit addressing=].
 
 The `SegmentTemplate@media` attribute SHALL contain the URL template for referencing [=media segments=], using either the `$Time$` or `$Number$` template variable to uniquely identify [=media segments=]. The `SegmentTemplate@initialization` attribute SHALL contain the URL template for referencing initialization segments.
 
-If using `$Number$` addressing, the number of the first segment reference is defined by `SegmentTemplate@startNumber` (default value 1).
+If using `$Number$` addressing, the number of the first segment reference is defined by `SegmentTemplate@startNumber` (default value 1) ([[!DASH]] 5.3.9.5.3).
+
+If using `$Time$` addressing, the template value for each [=segment reference=] is the [=segment start point=] on the [=sample timeline=] minus `@eptDelta` ([[!DASH]] 5.3.9.5.3).
 
 <div class="example">
 Below is an example of common usage of [=simple addressing=].
 
-The example defines a [=sample timeline=] with a [=timescale=] of 1000 units per second, with the [=period=] starting at position 900. The average duration of a [=media segment=] is 4001. [=Media segment=] numbering starts at 800, so the first [=media segment=] is found at the relative URL `video/800.m4s`. The sequence of [=media segments=] continues to the end of the period, which is 900 seconds long, making for a total of 225 defined [=segment references=].
+The example defines a [=sample timeline=] with a [=timescale=] of 1000 units per second, with the [=period=] starting at position 900 and the first [=media segment=] starting at position 400. The average duration of a [=media segment=] is 4001. [=Media segment=] numbering starts at 800, so the first [=media segment=] is found at the relative URL `video/800.m4s`. The sequence of [=media segments=] continues to the end of the period, which is 900 seconds long, making for a total of 226 defined [=segment references=].
+
+The [=period=] start point is 0.5 seconds after the [=segment start point=] of the first [=media segment=] and the [=period=] end point is approximately 69 milliseconds after the [=segment start point=] of the last [=media segment=]. The real timing of the samples within the [=media segments=] may differ from these nominal values in the [=MPD=], to the extent permitted by the timing model.
 
 <xmp highlight="xml">
 <MPD xmlns="urn:mpeg:dash:schema:mpd:2011">
@@ -299,6 +303,7 @@ The example defines a [=sample timeline=] with a [=timescale=] of 1000 units per
 		<AdaptationSet>
 			<Representation>
 				<SegmentTemplate timescale="1000" presentationTimeOffset="900"
+						eptDelta="-500"
 						media="video/$Number$.m4s" initialization="video/init.mp4"
 						duration="4001" startNumber="800" />
 			</Representation>
@@ -345,30 +350,24 @@ Near [=period=] boundaries, all the constraints of timing and addressing must st
 
 #### Moving the period start point (simple addressing) #### {#addressing-simple-startpoint}
 
-When splitting [=periods=] in two or performing other types of editorial timing adjustments, a service might want to start a [=period=] at a point after the "natural" start point of the [=representations=] within.
+When splitting [=periods=] in two or performing other types of editorial timing adjustments, a service might want to start a [=period=] at a point after the "natural" start point of the [=representations=] within. This can be challenging when using [=simple addressing=].
 
-[=Simple addressing=] is challenging to use in such scenarios. You SHOULD convert [=simple addressing=] [=representations=] to use [=explicit addressing=] before adjusting the [=period=] start point or splitting a [=period=]. See [[#addressing-simple-to-explicit]].
+Advisement: The [=media segment=] that overlaps the [=period=] start point must contain a sample that starts at or overlaps the [=period=] start point. Likewise, the [=media segment=] that overlaps the [=period=] end point must contain a sample that ends at or overlaps the [=period=] end point. This typically makes it impossible to move the [=period=] start point or split a [=period=] when using [=simple addressing=] and taking advantage of [[#addressing-simple-inaccuracy|the inaccuracy allowed to exist between nominal timing of the sample timeline and the true contents of the media segments]].
 
-The rest of this chapter provides instructions for situations where you choose **not** to convert to [=explicit addressing=].
+The rest of this chapter assumes that the nominal timing of [=media segments=] matches the real timing. If you cannot satisfy this constraint but still wish to move the [=period=] start point, convert to [=explicit addressing=]. See [[#addressing-simple-to-explicit]].
 
-To move the [=period=] start point, for [=representations=] that use [=simple addressing=]:
-
-* Every [=simple addressing=] [=representation=] in the [=period=] must contain a [=media segment=] that starts exactly at the new [=period=] start point.
-* [=Media segments=] starting at the new [=period=] start point must contain a sample that starts at or overlaps the new [=period=] start point.
-
-Note: If you are splitting a [=period=], also keep in mind [[#timing-mediasegment|the requirements on period end point sample alignment]] for the [=period=] that remains before the split point.
-
-Finding a suitable new start point that conforms to the above requirements can be very difficult. If inaccurate timing is used, it may be altogether impossible. This is a limitation of [=simple addressing=].
-
-Having ensured conformance to the above requirements for the new [=period=] start point, perform the following adjustments:
+To move the [=period=] start point for [=representations=] that use [=simple addressing=]:
 
 <div class="algorithm">
 
-1. Update `SegmentTemplate@presentationTimeOffset` to indicate the desired start point on the [=sample timeline=].
+1. Update `SegmentTemplate@presentationTimeOffset` to indicate the desired [=period=] start point on the [=sample timeline=].
+1. Update `SegmentTemplate@eptDelta` to indicate the relative position of the [=segment start point=] of the first [=media segment=] from the start of the [=period=].
 1. If using the `$Number$` template variable, increment `SegmentTemplate@startNumber` by the number of [=media segments=] removed from the beginning of the [=representation=].
 1. Update `Period@duration` to match the new duration.
 
 </div>
+
+Advisement: `@eptDelta` is new in [[!DASH]] 4th edition (published 2020). If the resulting `SegmentTemplate@eptDelta` value is not zero, DASH clients that do not support `@eptDelta` may exhibit incorrect behavior when transitioning between [=periods=]. The only workaround is to either [[#addressing-simple-to-explicit|convert to explicit addressing]] or to choose a [=period=] start point that overlaps with the [=segment start points=] of all [=representations=] in all adaptation sets that use [=simple addressing=]! Such points might not exist, depending on the [=media segment=] structure of the [=presentation=].
 
 #### Converting simple addressing to explicit addressing #### {#addressing-simple-to-explicit}
 
