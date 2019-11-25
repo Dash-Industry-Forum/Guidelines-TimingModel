@@ -1,10 +1,12 @@
 ## Large timescales and time values ## {#timescale-constraints}
 
-[[ECMASCRIPT]] is unable to accurately represent numeric values greater than 2<sup>53</sup> using built-in types. Therefore, interoperable services cannot use such values.
+[[ECMASCRIPT]] is unable to accurately represent numeric values greater than 2<sup>53</sup> (`9007199254740991`) using built-in types. Therefore, interoperable services cannot use such values.
 
 All timescales are start times used in a DASH presentations SHALL be sufficiently small that no timecode value exceeding 2<sup>53</sup> will be encountered, even during the publishing of long-lasting live services.
 
 Note: This may require the use of 64-bit fields, although the values must still be limited to under 2<sup>53</sup>.
+
+The issue does not arise with the common 90 KHz [=timescale=]. For example, `141721093260000` for November 11, 2019 is well within the allowed range of values.
 
 ## Representing durations in XML ## {#xml-duration-constraints}
 
