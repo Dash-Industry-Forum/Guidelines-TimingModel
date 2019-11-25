@@ -239,47 +239,47 @@ Issue: Illustrate what alignment means, especially with simple addressing.
 
 ## Period connectivity ## {#timing-connectivity}
 
-In certain circumstances content may be offered such that a [=representation=] is technically compatible with the content of a [=representation=] in a previous [=period=] ([[!DASH]] 5.3.2.4). Such [=representations=] are <dfn>period-connected</dfn>.
+In certain circumstances content may be offered such that the contents of one adaptation set are technically compatible with the contents an adaptation set in a previous [=period=] ([[!DASH]] 5.3.2.4). Such adaptation sets are <dfn>period-connected</dfn>.
 
-Initialization segments of [=period-connected=] [=representations=] are functionally equivalent ([[!DASH]] 5.3.2.4). That is, the initialization segment from any associated set of [=period-connected=] [=representations=] can be used to initialize playback of any [=period-connected=] [=representation=] in that set.
+The main characteristic of connectivity is that initialization segments of [=representations=] with matching `@id` in [=period-connected=] adaptation sets are functionally equivalent ([[!DASH]] 5.3.2.4). That is, the initialization segment of a [=representation=] in one [=period-connected=] adaptation set can be used to initialize playback of a [=representation=] with matching `@id` in the other [=period-connected=] adaptation set. Connectivity is typically achieved by using the same encoder to encode the content of multiple [=periods=] using the same settings.
 
-Note: Connectivity is typically achieved by using the same encoder to encode the content of multiple [=periods=] using the same settings. Keep in mind, however, that decryption is also a part of the client media pipeline - it is not only the codec parameters that are configured by the initialization segment; different decryption parameters are likely to break connectivity that would otherwise exist.
+Advisement: In encrypted content the content key identifier `default_KID` is part of the initialization segment. Using a different content key breaks period connectivity that would otherwise exist due to matching codec configuration.
 
-[=Period-connected=] [=representations=] content SHOULD be signaled in the [=MPD=] as [=period-connected=]. This signaling helps clients ensure seamless playback across [=period=] transitions.
+Adaptation sets SHALL NOT be signaled as [=period-connected=] if the set of [=representations=] in them is different, even if all shared [=representations=] remain compatible.
 
-Any subset of the [=representations=] in a [=period=] MAY be [=period-connected=] with their counterparts in a future or past [=period=]. [=Period=] connectivity MAY be chained across any number of [=periods=].
+Note: The above constraint removes some ambiguity from the [[!DASH]] definition, which does not explicitly state whether it is allowed to only have a subset of [=representations=] that is connected. [GitHub #387](https://github.com/Dash-Industry-Forum/DASH-IF-IOP/issues/387)
+
+An [=MPD=] MAY contain unrelated [=periods=] between [=periods=] that contain [=period-connected=] adaptation sets.[=Period=] connectivity MAY be chained across any number of [=periods=].
+
+[=Period-connected=] adaptation sets content SHOULD be signaled in the [=MPD=] as [=period-connected=]. This signaling helps clients ensure seamless playback across [=period=] transitions.
 
 <figure>
 	<img src="Images/Timing/PeriodConnectivity.png" />
-	<figcaption>[=Representations=] can be signaled as [=period-connected=], enabling client optimizations. Arrows on diagram indicate direction of connectivity reference (from future to past), with the implied message being "the client can use the same decoder it used where the arrow points to".</figcaption>
+	<figcaption>Adaptation sets can be signaled as [=period-connected=], enabling client optimizations. Arrows on diagram indicate direction of connectivity reference (from future to past), with the implied message being "the client can use the same decoder configuration it used where the arrow points to".</figcaption>
 </figure>
 
-An [=MPD=] MAY contain unrelated [=periods=] between [=periods=] that contain [=period-connected=] [=representations=].
+The [=sample timelines=] of [=representations=] in [=period-connected=] adaptation sets MAY be discontinuous between two [=periods=] (e.g. due to encoder clock wrap-around or skipping some content as a result of editorial decisions). See also [[#timing-continuity]].
 
-The [=sample timelines=] of [=period-connected=] [=representations=] MAY be mutually discontinuous (e.g. due to encoder clock wrap-around or skipping some content as a result of editorial decisions). See also [[#timing-continuity]].
+The following signaling in the [=MPD=] indicates that two adaptation sets are [=period-connected=] across two [=periods=] ([[!DASH]] 5.3.2.4):
 
-Note: Not all [=representations=] in an adaptation set need to be [=period-connected=]. For example, if a new [=period=] is introduced to add a [=representation=] that contains a new video quality level, all other [=representations=] will likely be connected but not the one that was added.
-
-The following signaling in the [=MPD=] indicates that two [=representations=] are [=period-connected=] across two [=periods=] ([[!DASH]] 5.3.2.4):
-
-* `Representation@id` is equal.
-* `AdaptationSet@id` is equal.
 * The adaptation set in the second [=period=] has a supplemental property descriptor with:
 	* `@shemeIdUri` set to `urn:mpeg:dash:period-connectivity:2015`.
 	* `@value` set to the `Period@id` of the first period.
 
+The [=period-connected=] adaptation sets have the same `@id` and the same set of `Representation@id` values ([[!DASH]] 5.3.2.4).
+
 ### Segment reference duplication during connected period transitions ### {#connectivity-duplicates}
 
-As a [=period=] may start and/or end in the middle of a [=media segment=], the same [=media segment=] may simultaneously be referenced by two [=period-connected=] [=representations=], with one part of it scheduled for playback during the first [=period=] and the other part during the second [=period=]. This is likely to be the case when no [=sample timeline=] discontinuity is introduced by the transition.
+As a [=period=] may start and/or end in the middle of a [=media segment=], the same [=media segment=] may simultaneously be referenced by two [=period-connected=] adaptation sets, with one part of it scheduled for playback during the first [=period=] and the other part during the second [=period=]. This is likely to be the case when no [=sample timeline=] discontinuity is introduced by the transition.
 
 <figure>
 	<img src="Images/Timing/SegmentOverlapOnPeriodConnectivity.png" />
 	<figcaption>The same [=media segment=] will often exist in two [=periods=] at a [=period-connected=] transition. On the diagram, this is segment 4.</figcaption>
 </figure>
 
-Clients SHOULD NOT present a [=media segment=] twice when it occurs on both sides of a [=period=] transition in a [=period-connected=] [=representation=].
+Clients SHOULD NOT present a [=media segment=] twice when it occurs on both sides of a [=period=] transition in a [=period-connected=] adaptation set.
 
-Clients SHOULD ensure seamless playback of [=period-connected=] [=representations=] in consecutive [=periods=]. Clients unable to ensure seamless playback MAY incur some amount of [=time shift=] at the [=period=] transition point provided that the resulting [=time shift=] is permitted by the timing model.
+Clients SHOULD ensure seamless playback of [=period-connected=] adaptation sets in consecutive [=periods=]. Clients unable to ensure seamless playback MAY incur some amount of [=time shift=] at the [=period=] transition point provided that the resulting [=time shift=] is permitted by the timing model.
 
 Note: The exact mechanism that ensures seamless playback depends on client capabilities and will be implementation-specific. Any shared [=media segment=] overlapping the [=period=] boundary may need to be detected and deduplicated to avoid presenting it twice.
 
