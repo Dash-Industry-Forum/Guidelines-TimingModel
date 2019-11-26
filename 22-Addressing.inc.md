@@ -273,7 +273,7 @@ Clauses in section only apply to [=representations=] that use [=simple addressin
 
 <figure>
 	<img src="Images/Timing/SimpleAddressing.png" />
-	<figcaption>[=Simple addressing=] uses a segment template that is combined with approximate first [=media segment=] timing information and an average [=media segment=] duration in order to reference [=media segments=], either by start time or by sequence number.</figcaption>
+	<figcaption>[=Simple addressing=] uses a segment template that is combined with approximate first [=media segment=] timing information and an average [=media segment=] duration in order to reference [=media segments=], either by start time or by sequence number. Note that `@eptDelta` does not affect the generated paths!</figcaption>
 </figure>
 
 The `SegmentTemplate@duration` attribute SHALL define the nominal duration of a [=media segment=] in [=timescale units=].
