@@ -285,7 +285,7 @@ Clauses in section only apply to [=representations=] that use [=simple addressin
 
 The `SegmentTemplate@duration` attribute defines the nominal duration of a [=media segment=] in [=timescale units=] ([[!DASH]] 5.3.9.2).
 
-The set of [=segment references=] consists of the first [=media segment=] starting `SegmentTemplate@eptDelta` [=timescale units=] relative to the [=period=] start point and all other [=media segments=] following in a consecutive series of equal time spans of `SegmentTemplate@duration` [=timescale units=], ending with a [=media segment=] that ends at or overlaps the [=period=] end time.
+The set of [=segment references=] consists of the first [=media segment=] starting `SegmentTemplate@eptDelta` [=timescale units=] relative to the [=period=] start point and all other [=media segments=] following in a consecutive series of equal time spans of `SegmentTemplate@duration` [=timescale units=], ending with a [=media segment=] that ends at or overlaps the [=period=] end time. The `@eptDelta` attribute SHALL be present if its value is not zero.
 
 Note: `@eptDelta` is expressed as an offset from the [=period=] start point to the [=segment start point=] of the first [=media segment=] ([[!DASH]] 5.3.9.2). In other words, the value will be negative if the first [=media segment=] starts before the [=period=] start point.
 
