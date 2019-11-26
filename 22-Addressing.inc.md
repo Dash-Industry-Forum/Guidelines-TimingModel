@@ -1,4 +1,4 @@
-## Segment addressing modes ## {#addressing}
+# Segment addressing modes # {#addressing}
 
 This section defines the <dfn>addressing modes</dfn> that can be used for referencing [=media segments=], initialization segments and index segments in interopreable DASH presentations.
 
@@ -25,7 +25,7 @@ A service MAY use [=simple addressing=] which enables the packager logic to be v
 * A single large file is more efficient to transfer and cache than 100 000 or more small files, reducing computational and I/O overhead.
 * CDNs are aware of the nature of byte-range requests and can preemptively read-ahead to fill the cache ahead of playback.
 
-### Indexed addressing ### {#addressing-indexed}
+## Indexed addressing ## {#addressing-indexed}
 
 A representation that uses <dfn>indexed addressing</dfn> consists of a CMAF track file containing an index segment, an initialization segment and a sequence of [=media segments=].
 
@@ -75,7 +75,7 @@ The example defines a [=timescale=] of 48000 units per second, with the [=period
 Parts of the [=MPD=] structure that are not relevant for this chapter have been omitted - this is not a fully functional [=MPD=] file.
 </div>
 
-### Structure of the index segment ### {#addressing-indexed-indexstructure}
+## Structure of the index segment ## {#addressing-indexed-indexstructure}
 
 The index segment SHALL consist of a single Segment Index Box (`sidx`) as defined by [[!ISOBMFF]]. The field layout of this data structure is as follows:
 
@@ -147,7 +147,7 @@ Note: The normative definitions of the fields are provided by [[!ISOBMFF]]. This
 
 Issue: We need to clarify how to determine the right value for `SAP_type` [GitHub #235](https://github.com/Dash-Industry-Forum/DASH-IF-IOP/issues/235).
 
-#### Moving the period start point (indexed addressing) #### {#addressing-indexed-startpoint}
+### Moving the period start point (indexed addressing) ### {#addressing-indexed-startpoint}
 
 When splitting [=periods=] in two or performing other types of editorial timing adjustments, a service might want to start a [=period=] at a point after the "natural" start point of the [=representations=] within.
 
@@ -156,7 +156,7 @@ For [=representations=] that use [=indexed addressing=], perform the following a
 1. Update `SegmentBase@presentationTimeOffset` to indicate the desired start point on the [=sample timeline=].
 1. Update `Period@duration` to match the new duration.
 
-### Explicit addressing ### {#addressing-explicit}
+## Explicit addressing ## {#addressing-explicit}
 
 A [=representation=] that uses <dfn>explicit addressing</dfn> consists of a set of [=media segments=] accessed via URLs constructed using a template defined in the [=MPD=], with the exact [=sample timeline=] time span covered by the samples in each [=media segment=] described in the [=MPD=].
 
@@ -251,7 +251,7 @@ The example defines a sequence of 11 [=media segments=] starting at position 120
 Parts of the [=MPD=] structure that are not relevant for this chapter have been omitted - this is not a fully functional [=MPD=] file.
 </div>
 
-#### Moving the period start point (explicit addressing) #### {#addressing-explicit-startpoint}
+### Moving the period start point (explicit addressing) ### {#addressing-explicit-startpoint}
 
 When splitting [=periods=] in two or performing other types of editorial timing adjustments, a service might want to start a [=period=] at a point after the "natural" start point of the [=representations=] within.
 
@@ -268,7 +268,7 @@ For [=representations=] that use [=explicit addressing=], perform the following 
 
 Note: See [[#representation-timing]] and [[#timing-mpd-updates-remove-content]] to understand the constraints that apply to [=segment reference=] removal.
 
-### Simple addressing ### {#addressing-simple}
+## Simple addressing ## {#addressing-simple}
 
 A representation that uses <dfn>simple addressing</dfn> consists of a set of [=media segments=] accessed via URLs constructed using a template defined in the [=MPD=], with the [=MPD=] describing the nominal time span of the [=sample timeline=] covered by each [=media segment=].
 
@@ -322,7 +322,7 @@ The [=period=] start point is 500 milliseconds after the [=segment start point=]
 Parts of the [=MPD=] structure that are not relevant for this chapter have been omitted - this is not a fully functional [=MPD=] file.
 </div>
 
-#### Inaccuracy in media segment timing when using simple addressing #### {#addressing-simple-inaccuracy}
+### Inaccuracy in media segment timing when using simple addressing ### {#addressing-simple-inaccuracy}
 
 When using [=simple addressing=], the samples contained in a [=media segment=] MAY cover a different time span on the [=sample timeline=] than what is indicated by the nominal timing in the [=MPD=], as long as no constraints defined in this document are violated by this deviation.
 
@@ -360,7 +360,7 @@ The following are all valid contents for such a [=media segment=]:
 Near [=period=] boundaries, all the constraints of timing and addressing must still be respected! Consider a [=media segment=] with a nominal start time of 0 seconds from [=period=] start and a nominal duration of 4 seconds. If such a [=media segment=] contained samples from 1 to 5 seconds (offset of 1 second away from zero point at both ends, which is within acceptable limits) it would be nonconforming because of the requirement that the first [=media segment=] contain a media sample that starts at or overlaps the [=period=] start point.
 </div>
 
-#### Moving the period start point (simple addressing) #### {#addressing-simple-startpoint}
+### Moving the period start point (simple addressing) ### {#addressing-simple-startpoint}
 
 When splitting [=periods=] in two or performing other types of editorial timing adjustments, a service might want to start a [=period=] at a point after the "natural" start point of the [=representations=] within. This can be challenging when using [=simple addressing=].
 
@@ -382,7 +382,7 @@ To move the [=period=] start point for [=representations=] that use [=simple add
 
 Advisement: `@eptDelta` is new in [[!DASH]] 4th edition (published 2020). If the resulting `SegmentTemplate@eptDelta` value is not zero, DASH clients that do not support `@eptDelta` may exhibit incorrect behavior when transitioning between [=periods=]. The only workaround is to either [[#addressing-simple-to-explicit|convert to explicit addressing]] or to choose a [=period=] start point that overlaps with the [=segment start points=] of all [=representations=] in all adaptation sets that use [=simple addressing=]! Such points might not exist, depending on the [=media segment=] structure of the [=presentation=].
 
-#### Converting simple addressing to explicit addressing #### {#addressing-simple-to-explicit}
+### Converting simple addressing to explicit addressing ### {#addressing-simple-to-explicit}
 
 It may sometimes be desirable to convert a presentation from [=simple addressing=] to [=explicit addressing=]. This chapter provides an algorithm to do this.
 

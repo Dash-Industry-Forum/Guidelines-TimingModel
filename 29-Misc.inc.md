@@ -1,4 +1,4 @@
-## Large timescales and time values ## {#timescale-constraints}
+# Large timescales and time values # {#timescale-constraints}
 
 [[ECMASCRIPT]] is unable to accurately represent numeric values greater than 2<sup>53</sup> (`9007199254740991`) using built-in types. Therefore, interoperable services cannot use such values.
 
@@ -14,7 +14,7 @@ Another common timescale is 10000000 (10 million [=timescale units=] per second)
 
 </div>
 
-## Representing durations in XML ## {#xml-duration-constraints}
+# Representing durations in XML # {#xml-duration-constraints}
 
 All units expressed in [=MPD=] fields of datatype `xs:duration` SHALL be treated as fixed size:
 
