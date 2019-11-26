@@ -282,7 +282,7 @@ The set of [=segment references=] SHALL consist of the first [=media segment=] s
 
 Note: `@eptDelta` is expressed as an offset from the [=period=] start point to the [=segment start point=] of the first [=media segment=]. In other words, the value will be negative if the first [=media segment=] starts before the [=period=] start point.
 
-Advisement: `@eptDelta` is new in [[!DASH]] 4th edition (published 2020) and DASH client support is not yet widespread. Clients that do not implement support for `@eptDelta` may experience faulty timing behavior and fail to correctly transition between [=periods=] that use [=simple addressing=]. If the client cannot be upgraded to consider `@eptDelta` then you are advised to use [=explicit addressing=].
+Advisement: `@eptDelta` is new in [[!DASH]] 4th edition (published 2020) and DASH client support is not yet widespread. Clients that do not implement support for `@eptDelta` may experience faulty timing behavior and fail to correctly transition between [=periods=] that use [=simple addressing=] with `@eptDelta != 0`. If the client cannot be upgraded to consider `@eptDelta` then you are advised to use [=explicit addressing=] with such content.
 
 The `SegmentTemplate@media` attribute SHALL contain the URL template for referencing [=media segments=], using either the `$Time$` or `$Number$` template variable to uniquely identify [=media segments=]. The `SegmentTemplate@initialization` attribute SHALL contain the URL template for referencing initialization segments.
 
