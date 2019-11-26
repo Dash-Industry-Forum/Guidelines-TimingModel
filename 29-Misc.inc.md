@@ -6,7 +6,13 @@ All timescales are start times used in a DASH presentations SHALL be sufficientl
 
 Note: This may require the use of 64-bit fields, although the values must still be limited to under 2<sup>53</sup>.
 
-The issue does not arise with the common 90 KHz [=timescale=]. For example, `141721093260000` for November 11, 2019 is well within the allowed range of values.
+<div class="example">
+
+The issue does not arise with the common 90 KHz [=timescale=]. Counting time since the Unix epoch until 11 November 2019 we get `141721093260000` which is well within the allowed range of values.
+
+Another common timescale is 10000000 (10 million [=timescale units=] per second) often used by Smooth Streaming. Counting time since the Unix epoch until 11 November 2019 we get `15746788140000000` which does exceed the critical value and will result in broken playback on many clients! To correct such an error, use a smaller timescale or a [=MPD timeline=] zero point that is not so far in the past.
+
+</div>
 
 ## Representing durations in XML ## {#xml-duration-constraints}
 
