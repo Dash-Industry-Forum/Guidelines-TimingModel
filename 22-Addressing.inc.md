@@ -145,7 +145,7 @@ Note: The normative definitions of the fields are provided by [[!ISOBMFF]]. This
 : `SAP_delta_time`
 :: `0`
 
-Issue: We need to clarify how to determine the right value for `SAP_type`. [#235](https://github.com/Dash-Industry-Forum/DASH-IF-IOP/issues/235)
+Issue: We need to clarify how to determine the right value for `SAP_type` [GitHub #235](https://github.com/Dash-Industry-Forum/DASH-IF-IOP/issues/235).
 
 #### Moving the period start point (indexed addressing) #### {#addressing-indexed-startpoint}
 

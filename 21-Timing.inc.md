@@ -397,8 +397,6 @@ The [=availability window=] is calculated as follows:
 
 Note: [[!DASH]] 4.3 and 5.3.9 define "segment availability time" of a segment as the span of [=wall clock=] time during which that [=media segment=] is available. Consequently, the [=availability window=] at each moment is **approximately** equivalent to the union of "segment availability times" of all [=available=] [=media segments=] at that moment.
 
-Issue: Illustrate the approximate equivalence with a diagram if it feels important enough (hard to understand otherwise but not sure how necessary).
-
 Advisement: It is the responsibility of the DASH service to ensure that [=media segments=] are [=available=] to clients when they are described as [=available=] by the [=MPD=] [[!DASH]]. Keep in mind that the criterium for availability is a successful download by clients, not successful publishing from a packager.
 
 Clients MAY at any point attempt to acquire any [=media segments=] that the [=MPD=] signals as [=available=]. Clients SHALL NOT attempt to acquire [=media segments=] that the [=MPD=] does not signal as [=available=].
