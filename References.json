@@ -15,5 +15,10 @@
     },
     "CMAF": {
         "aliasOf": "MPEGCMAF"
+    },
+    "LEAP-SECONDS": {
+        "href": "https://datacenter.iers.org/data/latestVersion/16_BULLETIN_C16.txt",
+        "title": "IERS Bulletin C (leap second announcements)",
+        "publisher": "IERS"
     }
 }

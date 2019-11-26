@@ -34,7 +34,7 @@ There exist two types of DASH [=presentations=], indicated by `MPD@type` [[!DASH
 	* Furthermore, [=media segments=] may become [=available=] and cease to be [=available=] with the passage of time.
 	* [[#timing-mpd-updates|The MPD may change over time]], enabling the structure of the [=presentation=] to change over time (e.g. when a new title in the [=presentation=] is offered with a different set of languages).
 
-In a [=dynamic presentation=], the zero point of the [=MPD timeline=] is mapped to the point in [=wall clock=] time indicated by `MPD@availabilityStartTime` ([[!DASH]] 5.3.9.5). This allows a [=wall clock=] time to be associated with each [=media segment=], indicating the moment the [=media segment=] is intended to be presented.
+In a [=dynamic presentation=], the zero point of the [=MPD timeline=] is the mapped to the point in [=wall clock=] time indicated by the <dfn>effective availability start time</dfn>, which is formed by taking `MPD@availabilityStartTime` and applying any `LeapSecondInformation` offset ([[!DASH]] 5.3.9.5 and 5.13). This allows a [=wall clock=] time to be associated with each [=media segment=], indicating the moment the [=media segment=] is intended to be presented. The zero point of the [=MPD timeline=] will move when leap seconds occur ([[!DASH]] 5.13). See also [[#leap-seconds]].
 
 `MPD@mediaPresentationDuration` MAY be present in an [=MPD=]. If present, it SHALL accurately match the duration between the zero point on the [=MPD timeline=] and the end of the last [=period=], including the duration of any XLink [=periods=]. Clients SHALL calculate the total duration of a [=static presentation=] by adding up the durations of each [=period=] and SHALL NOT rely on the presence of `MPD@mediaPresentationDuration`.
 
@@ -324,6 +324,8 @@ The below [=MPD=] consists of two 300-second [=periods=]. The duration of the fi
 
 The [=dynamic presentation=] was intended to be presented starting at 09:35 UTC on December 2, 2017, allowing for up to 400 seconds of [=time shift=] by the DASH client. By the absence of `MPD@minimumUpdatePeriod`, the [=MPD=] indicates that its contents will never change.
 
+The absence of an `LeapSecondInformation` element indicates the service provider does not expect the service to remain accessible for long enough to encounter a leap second.
+
 <xmp highlight="xml">
 <MPD xmlns="urn:mpeg:dash:schema:mpd:2011" type="dynamic"
 	availabilityStartTime="2017-12-02T09:35:00Z" timeShiftBufferDepth="PT400S">
@@ -368,6 +370,14 @@ The set of time synchronization mechanisms SHALL be restricted to the following 
 
 Issue: We could benefit from some detailed examples here, especially as clock sync is such a critical element of live services.
 
+### Leap seconds ### {#leap-seconds}
+
+[=Dynamic presentations=] that cross the boundary between December/January or June/July ([[LEAP-SECONDS]]) need to correctly represent the effects of leap seconds to DASH clients, which shift the [=MPD timeline=] start point. Under the model defined by [[!DASH]] 5.13, clients are informed of necessary leap second adjustments via the [=MPD=].
+
+The [=MPD=] of a [=dynamic presentations=] SHALL publish leap second offset information in the [=MPD=], in the form of a `LeapSecondInformation` element as defined by [[!DASH]] 5.13, unless the service provider does not intend for the [=presentation=] to remain accessible long enough to encounter a December/January or June/July transition in the UTC timezone.
+
+Clients SHALL process leap second offset information (and any updates received due to [=MPD refreshes=]) in order to accurately calculate the [=effective availability start time=].
+
 ### Availability ### {#timing-availability}
 
 A [=media segment=] is <dfn>available</dfn> when an HTTP request to acquire the [=media segment=] can be started and successfully performed to completion by a client ([[!DASH]] 3.1.6). During playback of a [=dynamic presentation=], new [=media segments=] continuously become [=available=] and stop being [=available=] with the passage of time.
@@ -387,7 +397,7 @@ The [=availability window=] is calculated as follows:
 
 1. Let <var>now</var> be the current wall clock time according to the [=wall clock=].
 1. Let <var>AvailabilityWindowStart</var> be <code><var>now</var> - MPD@timeShiftBufferDepth</code>.
-	* If `MPD@timeShiftBufferDepth` is not defined, let <var>AvailabilityWindowStart</var> be `MPD@availabilityStartTime`.
+	* If `MPD@timeShiftBufferDepth` is not defined, let <var>AvailabilityWindowStart</var> be the [=effective availability start time=].
 1. Let <var>TotalAvailabilityTimeOffset</var> be the sum of all `@availabilityTimeOffset` values that apply to the adaptation set (those directly on the `AdaptationSet` element and any of its ancestors).
 1. The [=availability window=] is the time span from <var>AvailabilityWindowStart</var> to <code><var>now</var> + <var>TotalAvailabilityTimeOffset</var></code>.
 
@@ -416,7 +426,7 @@ The following additional factors further constrain the set of [=media segments=]
 1. [[#timing-availability]] - not every [=media segment=] in the time shift buffer is guaranteed to be [=available=].
 1. [[#timing-delay]] - the service may define a delay that forbids the use of a section of the [=time shift buffer=].
 
-The [=time shift buffer=] extends from `now - MPD@timeShiftBufferDepth` to `now`. In the absence of `MPD@timeShiftBufferDepth` the start of the [=time shift buffer=] is `MPD@availabilityStartTime`.
+The [=time shift buffer=] extends from `now - MPD@timeShiftBufferDepth` to `now`. In the absence of `MPD@timeShiftBufferDepth` the start of the [=time shift buffer=] is the [=effective availability start time=].
 
 <figure>
 	<img src="Images/Timing/TimeShiftBuffer.png" />
@@ -428,7 +438,7 @@ Clients MAY present samples from [=media segments=] that overlap (either in full
 The start of the [=time shift buffer=] MAY be before the start of the first [=period=]. Common reasons for this are:
 
 * The [=presentation=] just started and there is not enough content to fill the [=time shift buffer=].
-* The service is published with an effectively infinite [=time shift buffer=] (up to the zero point of the [=MPD timeline=] as indicated by `MPD@availabilityStartTime`).
+* The service is published with an effectively infinite [=time shift buffer=] (up to the zero point of the [=MPD timeline=] as indicated by the [=effective availability start time=]).
 
 A [=dynamic presentation=] SHALL contain a [=period=] that ends at or overlaps the end point of the [=time shift buffer=], except when reaching [[#timing-mpd-updates-theend|the end of live content]] in which case the last [=period=] MAY end before the end of the [=time shift buffer=].
 
@@ -487,6 +497,7 @@ Some common reasons to make changes in the [=MPDs=] of [=dynamic presentations=]
 DASH-IF implementation guidelines further extend these constraints:
 
 * `MPD@availabilityStartTime` SHALL NOT change.
+	* Leap second adjustments are performed by adjusting the `LeapSecondInformation` element (see [[#leap-seconds]]).
 * `Period@start` SHALL NOT change.
 * `Period@duration` SHALL NOT change except when explicitly allowed by other statements in this document.
 * `AdaptationSet@id` SHALL be present on every `AdaptationSet` element.
