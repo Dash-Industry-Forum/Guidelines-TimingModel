@@ -398,7 +398,7 @@ The [=availability window=] is calculated as follows:
 1. Let <var>now</var> be the current wall clock time according to the [=wall clock=].
 1. Let <var>AvailabilityWindowStart</var> be <code><var>now</var> - MPD@timeShiftBufferDepth</code>.
 	* If `MPD@timeShiftBufferDepth` is not defined, let <var>AvailabilityWindowStart</var> be the [=effective availability start time=].
-1. Let <var>TotalAvailabilityTimeOffset</var> be the sum of all `@availabilityTimeOffset` values that apply to the adaptation set (those directly on the `AdaptationSet` element and any of its ancestors).
+1. Let <var>TotalAvailabilityTimeOffset</var> be the sum of all `@availabilityTimeOffset` values that apply to the adaptation set, either via `SegmentBase`, `SegmentTemplate` or `BaseURL` elements ([[!MPEGDASH]] 5.3.9.5.3).
 1. The [=availability window=] is the time span from <var>AvailabilityWindowStart</var> to <code><var>now</var> + <var>TotalAvailabilityTimeOffset</var></code>.
 
 </div>
