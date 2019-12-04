@@ -640,6 +640,8 @@ Clients using HTTP to perform [=MPD refreshes=] SHOULD use conditional GET reque
 
 Some services store text adaptation sets in stand-alone IMSC1 or WebVTT files, without segmentation or [[!ISOBMFF]] encapsulation.
 
+Note: Storing text tracks in stand-alone files is not permitted by [[!CMAF]]. If you intend your DASH service to conform to [[!CMAF]], you must store text tracks as segmented [[!CMAF]] tracks.
+
 Timecodes in stand-alone text files SHALL be relative to the [=period=] start point.
 
 `@presentationTimeOffset` SHALL NOT be present and SHALL be ignored by clients if present.
