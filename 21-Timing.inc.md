@@ -674,6 +674,34 @@ It can often be the case that a live service signals a short [=MPD validity dura
 
 Clients using HTTP to perform [=MPD refreshes=] SHOULD use conditional GET requests as specified in [[!RFC7232]] to avoid unnecessary data transfers when the contents of the [=MPD=] do not change between refreshes.
 
+# Segment loss handling # {#missing-segments}
+
+Due to network or other faults, it is possible that [=media segments=] do not reach the DASH packager, effectively creating a discontinuity in a [=representation=]. As DASH clients typically have difficulties processing content with gaps and the timing model described here forbids gaps in general, missing segments would likely lead to an unsatisfactory playback experience for end-users.
+
+<figure>
+	<img src="Images/Timing/MissingSegment.png" />
+	<figcaption>A DASH packager might not have every [=media segment=] available when it needs to publish them. Corrective actions must be taken to ensure an uninterrupted timeline is presented to DASH clients.</figcaption>
+</figure>
+
+Therefore, DASH services SHALL NOT publish [=periods=] that have missing segments, whether the segment loss is described by "missing content segments" ([[!DASH]] 6.2.6) or by any other means (including not describing it).
+
+<figure>
+	<img src="Images/Timing/MissingSegment-FixWithPeriodSplitting.png" />
+	<figcaption>The simplest correction is to start a new period that does not include the affected [=representation=] for the duration of the loss. Other [=representations=] remain present and a client can often continue seamless playback without the missing [=representation=].</figcaption>
+</figure>
+
+Instead, DASH services SHOULD start a new [=period=] that does not include the [=representation=] that would experience a gap, later restoring the [=representation=] with a new [=period=] transition. [[#timing-connectivity|Period-connected adptation sets]] can enable DASH clients to perform such transitions seamlessly in some scenarios.
+
+<figure>
+	<img src="Images/Timing/MissingSegment-FixWithPlaceholder.png" />
+	<figcaption>Other solutions might involve replacing the missing [=media segment=] with a placeholder, either from a different [=representation=] or an entirely artificial one.</figcaption>
+</figure>
+
+Alternatively, given a sufficiently capable DASH packager and provided that technical constraints of [=representations=] are satisfied:
+
+* The missing [=media segment=] MAY be replaced with an aligned [=media segment=] from a lower bitrate (likely requires a single initialization CMAF switching set [[!CMAF]] 7.3.4.2).
+* The missing [=media segment=] MAY be replaced with a placeholder (black/silent/empty) [=media segment=], the media samples of which cover the same time span on the same [=sample timeline=] as the missing [=media segment=].
+
 # Timing of stand-alone IMSC1 and WebVTT text files # {#standalone-text-timing}
 
 Some services store text adaptation sets in stand-alone IMSC1 or WebVTT files, without segmentation or [[!ISOBMFF]] encapsulation.
