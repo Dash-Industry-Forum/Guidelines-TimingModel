@@ -239,7 +239,7 @@ Advisement: The segment-related terminology in this document is aligned with [[!
 
 [=Media segments=] contain one or more consecutive media samples and consecutive [=media segments=] in the same [=representation=] contain consecutive media samples [[!CMAF]].
 
-A [=media segment=] contains the media samples that exactly match the time span on the [=sample timeline=] assigned to the [=media segment=] by a [=segment reference=] ([[!DASH]] 7.2.1 and [[!DASH-CMAF]]), except when using [=simple addressing=] in which case a certain amount of inaccuracy may be present as defined in [[#addressing-simple-inaccuracy]].
+A [=media segment=] contains the media samples that exactly match the time span on the [=sample timeline=] associated with a [=media segment=] via a [=segment reference=] ([[!DASH]] 7.2.1 and [[!DASH-CMAF]]), except when using [=simple addressing=] in which case a certain amount of inaccuracy may be present as defined in [[#addressing-simple-inaccuracy]].
 
 Advisement: All timing-related clauses in this document refer to the nominal timing described in the [=MPD=] unless otherwise noted. DASH clients are expected to operate with nominal times in playback logic, even if the real values differ due to permitted amounts of inaccuracy.
 
