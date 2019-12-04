@@ -219,9 +219,28 @@ As perfect alignment between sample and [=period=] boundaries cannot be expected
 
 Some encoders experience clock drift - they do not produce exactly 1 second worth of output per 1 second of input, either stretching or compressing the [=sample timeline=] with respect to the [=MPD timeline=].
 
-It would be unreasonable to expect DASH clients to counteract this my performing their own timeline stretching or compressing during playback. Therefore, a DASH service SHALL NOT publish content that suffers from clock drift.
+<figure>
+	<img src="Images/Timing/ClockDrift.png" />
+	<figcaption>Comparison of an encoder correctly tracking [=wall clock=] time (blue) and an encoder with a clock that runs 0.8% too slowly (yellow), leading it to producing fewer seconds of content than expected (the correct amount of content has been temporally compressed by the encoder to fit into a smaller number of seconds). A DASH packager cannot use the yellow encoder's output as-is or it would violate the DASH timing model, which requires services to track [=wall clock=] time, and potentially lead to track de-synchronization.</figcaption>
+</figure>
 
-If a packager receives input from an encoder at the wrong rate, it must take corrective action. For example, it might:
+Clock drift not only causes timing model violations when an insufficient amount of data is produced but also leads to de-synchronization of content in tracks encoded based on different clocks. [[!CMAF]] 6.3 and 6.6.8 require tracks to be synchronized.
+
+Note: A lack of data at the current [=wall clock=] time or in the past is typically a violation of the timing model, whereas there is no explicit restriction on providing data in the future.
+
+To detect clock drift, one can check for the presence/absence of data near the current [=wall clock=] time. If data from now or the immediate past is absent, possibly the encoder has a slow clock. If data from the future is present, possibly the encoder has a fast clock. Furthermore, gradual de-synchronization of content in different tracks over a long play duration is a clear sign of clock drift on one or more of the involved encoders.
+
+It would be unreasonable to expect DASH clients to counteract clock drift by performing their own timeline stretching or compressing during playback, even if provided with the information about clock differences. DASH clients are based on very limited media platform APIs that typically lack the capability for any such compensation. Therefore, a DASH service SHALL NOT publish content that suffers from clock drift.
+
+The solution is to adjust the encoder so that it correctly tracks [=wall clock=] time, e.g. by performing regular small adjustments to the encoder clock to counteract any "natural" drift it may be experiencing. The exact implementation depends on the encoder timing logic and is out of scope of this document.
+
+## Workarounds for clock drift ## {#clock-drift-ugly-hacks}
+
+If the encoder cannot be adjusted to not suffer from clock drift, the only remaining option is to post-process its output to bring the [=presentation=] into conformance with the timing model. The facilities available to the packager are likely less powerful than those available to the encoder - it is unlikely that re-encoding/re-timing the media samples is practical in the packager. Furthermore, this type of adjustment will not eliminate track de-synchronization that will be present unless the clocks used to encode all tracks drift at the same rate.
+
+DASH packagers are responsible for generating DASH [=presentations=] that conform to targeted standards or specifications and cannot assume perfect encoder implementations. It is a fact that some encoders suffer from clock drift. DASH packagers SHOULD implement workarounds to ensure the [=presentation=] is conforming to targeted standards and specifications. This may require some some unavoidable disruption of the end-user experience.
+
+The following are examples of approaches a DASH packager could use to bring content from an encoder suffering clock drift into conformance:
 
 1. Drop a span of content if input is produced faster than real-time.
 1. Insert regular padding content if input is produced slower than real-time. This padding can take different forms:
@@ -229,7 +248,7 @@ If a packager receives input from an encoder at the wrong rate, it must take cor
 	* Repeating frames.
 	* Insertion of short-duration [=periods=] where the affected [=representations=] are not present.
 
-Of course, such after-the-fact corrective actions can disrupt the end-user experience. The optimal solution is to fix the defective encoder.
+Such after-the-fact corrective actions can be disruptive and only serve as a backstop to prevent complete playback failure cased by timing model violations. Such workarounds might be satisfactory when correcting for very small drift rates, with any disruptions being relatively rare.
 
 # Media segments # {#timing-mediasegment}
 
