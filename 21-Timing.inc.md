@@ -49,6 +49,8 @@ An [=MPD=] defines an ordered list of one or more consecutive non-overlapping <d
 	<figcaption>An [=MPD=] defines a collection of consecutive non-overlapping [=periods=].</figcaption>
 </figure>
 
+The start of a [=period=] is specified either explicitly as an offset from the [=MPD timeline=] zero point (`Period@start`) or implicitly by the end of the previous [=period=] ([[!DASH]] 5.3.2). The duration of a [=period=] is specified either explicitly with `Period@duration` or implicitly by the start point of the next [=period=] ([[!DASH]] 5.3.2). See also [[#timing-period-static]] and [[#timing-period-dynamic]].
+
 [=Periods=] are self-contained - a service SHALL NOT require a client to know the contents of another [=period=] in order to correctly present a [=period=]. Knowledge of the contents of different periods MAY be used by a client to achieve seamless [=period=] transitions, especially when working with [[#timing-connectivity|period-connected representations]].
 
 Common reasons for defining multiple [=periods=] are:
@@ -91,6 +93,23 @@ In a [=dynamic presentation=], the last [=period=] MAY have a `Period@duration`,
 
 Note: A [=period=] with an unlimited duration can be converted to fixed duration by an [=MPD=] update, so even a nominally unlimited duration is effectively constrained by the [=MPD validity duration=] of the current [=MPD=] snapshot.
 
+<div class="example">
+The below [=MPD=] consists of a 20-second [=period=] followed by a [=period=] of unlimited duration.
+
+<xmp highlight="xml">
+<MPD xmlns="urn:mpeg:dash:schema:mpd:2011" type="dynamic">
+	<Period duration="PT20S">
+		...
+	</Period>
+	<Period>
+		...
+	</Period>
+</MPD>
+</xmp>
+
+Parts of the [=MPD=] structure that are not relevant for this chapter have been omitted - this is not a fully functional [=MPD=] file.
+</div>
+
 # Representation timing # {#representation-timing}
 
 <dfn>Representations</dfn> provide the content for [=periods=]. A [=representation=] is a sequence of [=media segments=], an initialization segment, an optional index segment and related metadata ([[!DASH]] 5.3.1 and 5.3.5).
@@ -125,14 +144,14 @@ Parts of the [=MPD=] structure that are not relevant for this chapter have been 
 
 ## Sample timeline ## {#timing-sampletimeline}
 
-The samples within a [=representation=] exist on a linear <dfn>sample timeline</dfn> defined by the encoder that created the samples. [=Sample timelines=] are mapped onto the [=MPD timeline=] by metadata stored in or referenced by the [=MPD=] ([[!DASH]] 7.3.2).
+The samples within a [=representation=] exist on a linear <dfn>sample timeline</dfn> defined by the encoder that creates the samples. [=Sample timelines=] are mapped onto the [=MPD timeline=] by metadata stored in or referenced by the [=MPD=] ([[!DASH]] 7.3.2).
 
 <figure>
 	<img src="Images/Timing/TimelineAlignment.png" />
 	<figcaption>A [=sample timeline=] is mapped onto the [=MPD timeline=] based on parameters defined in the [=MPD=], relating the media samples provided by a [=representation=] to the portion of the [=MPD timeline=] covered by the [=period=] that references the [=representation=]. The [=sample timelines=] extend further beyond the range of the [=period=] (full extents not illustrated).</figcaption>
 </figure>
 
-The [=sample timeline=] does not determine what samples are presented. It merely connects the timing of the [=representation=] to the [=MPD timeline=] and allows the correct [=media segments=] to be identified when a DASH client makes scheduling decisions driven by the [=MPD timeline=].
+The [=sample timeline=] does not determine what samples are presented. It merely connects the timing of the [=representation=] to the [=MPD timeline=] and allows the correct [=media segments=] to be identified when a DASH client makes scheduling decisions driven by the [=MPD timeline=]. The exact connection between [=media segments=] and the [=sample timeline=] is defined by the [=addressing mode=].
 
 The same [=sample timeline=] is shared by all [=representations=] in the same adaptation set [[!DASH-CMAF]]. [=Representations=] in different adaptation sets MAY use different [=sample timelines=].
 
@@ -258,7 +277,7 @@ Advisement: The segment-related terminology in this document is aligned with [[!
 
 [=Media segments=] contain one or more consecutive media samples and consecutive [=media segments=] in the same [=representation=] contain consecutive media samples [[!CMAF]].
 
-A [=media segment=] contains the media samples that exactly match the time span on the [=sample timeline=] associated with a [=media segment=] via a [=segment reference=] ([[!DASH]] 7.2.1 and [[!DASH-CMAF]]), except when using [=simple addressing=] in which case a certain amount of inaccuracy may be present as defined in [[#addressing-simple-inaccuracy]].
+A [=media segment=] contains the media samples that exactly match the time span on the [=sample timeline=] associated with a [=media segment=] via a [=segment reference=] ([[!DASH]] 7.2.1 and [[!DASH-CMAF]]), except when using [=simple addressing=] in which case a certain amount of inaccuracy may be present as defined in [[#addressing-simple-inaccuracy]]. How [=segment references=] are defined depends on the [=addressing mode=].
 
 Advisement: All timing-related clauses in this document refer to the nominal timing described in the [=MPD=] unless otherwise noted. DASH clients are expected to operate with nominal times in playback logic, even if the real values differ due to permitted amounts of inaccuracy.
 
