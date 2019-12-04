@@ -104,7 +104,7 @@ Different documents often use different terms to refer to the same structural co
 		<tbody>
 			<tr>
 				<td>(media) segment, subsegment
-				<td>CMAF segment
+				<td>CMAF segment, CMAF fragment
 				<td>
 			<tr>
 				<td>initialization segment
