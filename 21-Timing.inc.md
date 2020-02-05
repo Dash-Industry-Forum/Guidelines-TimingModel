@@ -313,7 +313,7 @@ The [=sample timelines=] of [=representations=] in [=period-connected=] adaptati
 The following signaling in the [=MPD=] indicates that two adaptation sets are [=period-connected=] across two [=periods=] ([[!DASH]] 5.3.2.4):
 
 * The adaptation set in the second [=period=] has a supplemental property descriptor with:
-	* `@shemeIdUri` set to `urn:mpeg:dash:period-connectivity:2015`.
+	* `@schemeIdUri` set to `urn:mpeg:dash:period-connectivity:2015`.
 	* `@value` set to the `Period@id` of the first period.
 
 The [=period-connected=] adaptation sets have the same `@id` and the same set of `Representation@id` values ([[!DASH]] 5.3.2.4).
