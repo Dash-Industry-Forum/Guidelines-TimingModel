@@ -699,6 +699,8 @@ Instead, DASH services SHOULD start a new [=period=] that does not include the [
 	<figcaption>Other solutions might involve replacing the missing [=media segment=] with a placeholder, either from a different [=representation=] or an entirely artificial one.</figcaption>
 </figure>
 
+Advisement: Some DASH clients experience difficulties when transitioning to/from a very short period (e.g. with a duration of only 1 [=media segment=]). Implementations MAY extend the transition [=period=] for better compatibility with such clients.
+
 Alternatively, given a sufficiently capable DASH packager and provided that technical constraints of [=representations=] are satisfied:
 
 * The missing [=media segment=] MAY be replaced with an aligned [=media segment=] from a lower bitrate (likely requires a single initialization CMAF switching set [[!CMAF]] 7.3.4.2).
