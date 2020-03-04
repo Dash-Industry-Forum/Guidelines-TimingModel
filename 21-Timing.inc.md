@@ -429,6 +429,8 @@ Each adaptation set has its own [=availability window=]. Services SHALL NOT defi
 	<figcaption>The [=availability window=] determines which [=media segments=] can be expected to be [=available=], based on where their [=segment end point=] lies.</figcaption>
 </figure>
 
+Note: A DASH service will typically make [=media segments=] [=available=] some seconds ahead of `t=now`, depending on its configuration and latency target. Furthermore, some [=periods=] may be entirely prepared in advance and [=available=] at all times (e.g. ads inserted between truly live content).
+
 The [=availability window=] is calculated as follows:
 
 <div class="algorithm">
