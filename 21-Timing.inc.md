@@ -702,7 +702,6 @@ Instead, DASH services SHOULD start a new [=period=] that does not include the [
 Alternatively, given a sufficiently capable DASH packager and provided that technical constraints of [=representations=] are satisfied:
 
 * The missing [=media segment=] MAY be replaced with an aligned [=media segment=] from a lower bitrate (likely requires a single initialization CMAF switching set [[!CMAF]] 7.3.4.2).
-* The missing [=media segment=] MAY be replaced with a placeholder (black/silent/empty) [=media segment=], the media samples of which cover the same time span on the same [=sample timeline=] as the missing [=media segment=].
 
 # Timing of stand-alone IMSC1 and WebVTT text files # {#standalone-text-timing}
 
