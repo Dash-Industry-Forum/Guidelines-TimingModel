@@ -570,7 +570,15 @@ The presence or absence of `MPD@minimumUpdatePeriod` SHALL be used by DASH servi
 	* One typical use case is to combine this with an infinite sequence of [=segment references=], defining a [=presentation=] that never ends and never changes.
 	* Another use case is using a [=dynamic presentation=] to schedule the presentation of pre-prepared finite content for a specific time span of [=wall clock=] time.
 
-The `MPD@minimumUpdatePeriod` mechanism for defining the [=MPD validity duration=] MAY be combined with in-band [=MPD=] validity update events ([[!DASH]] 5.10.4.2) that can change the validity duration after the [=MPD=] is processed.
+#### In-band MPD validity events #### {#timing-mpd-inband}
+
+In addition to the `MPD@minimumUpdatePeriod` mechanism for defining the [=MPD validity duration=], a DASH service MAY publish in-band [=MPD=] validity update events ([[!DASH]] 5.10.4.2). If a DASH client processes in-band events for determining the [=MPD=] snapshot validity duration then `MPD@minimumUpdatePeriod` is ignored for the purposes of determining [=MPD=] snapshot validity.
+
+When in-band signaling is used, the absence of an in-band event that corresponds to a particular [=MPD=] snapshot (identified by `MPD@publishTime`) implies [=MPD=] snapshot validity extension until an explicit validity duration is defined by a future in-band event. This enables finer control over [=MPD=] snapshot validity by the service but might not be supported by all clients.
+
+Note: Effectively, there are two [=MPD=] snapshot validity durations in place with in-band signaling, one defined by `MPD@minimumUpdatePeriod` and one by in-band signaling. A DASH client may use either. DASH services are sometimes published with `MPD@minimumUpdatePeriod=0` in such a situation, reducing the validity duration defined by one model to zero and allowing the other model to have full control. This may cause extra overhead for clients that do not use in-band signals, however.
+
+Services SHALL NOT require clients to support in-band events - it is an optional optimization mechanism to allow clients to reduce HTTP traffic caused by fetching new [=MPD=] snapshots.
 
 ### Adding content to the MPD ### {#timing-mpd-updates-add-content}
 
@@ -665,10 +673,6 @@ Clients presenting [=dynamic presentations=] SHALL execute the following [=MPD=]
     * Or it may be that the [=MPD=] has not changed, in which case its [=MPD validity duration=] is extended to `DownloadStart + MPD@minimumUpdatePeriod`.
 
 Note: There is no requirement that clients poll for updates at `MPD@minimumUpdatePeriod` interval. They can do so as often or as rarely as they wish - this attribute simply defines the [=MPD validity duration=].
-
-Services MAY publish in-band events ([[!DASH]] 5.10.4.2) to explicitly signal MPD validity instead of expecting clients to regularly refresh on their own initiative. This enables finer control by the service but might not be supported by all clients.
-
-Services SHALL NOT require clients to support in-band events - they are an optional optimization mechanism to allow clients to reduce HTTP traffic caused by fetching new [=MPD=] snapshots.
 
 ### Conditional MPD downloads ### {#conditional-mpd-downloads}
 
