@@ -705,9 +705,7 @@ Instead, DASH services SHOULD start a new [=period=] that does not include the [
 
 Advisement: Some DASH clients experience difficulties when transitioning to/from a very short period (e.g. with a duration of only 1 [=media segment=]). Implementations MAY extend the transition [=period=] for better compatibility with such clients.
 
-Alternatively, given a sufficiently capable DASH packager and provided that technical constraints of [=representations=] are satisfied:
-
-* The missing [=media segment=] MAY be replaced with an aligned [=media segment=] from a lower bitrate (likely requires a single initialization CMAF switching set [[!CMAF]] 7.3.4.2).
+Alternatively, given a sufficiently capable DASH packager and provided that technical constraints of [=representations=] are satisfied, the missing [=media segment=] MAY be replaced with an aligned [=media segment=] from a lower bitrate (likely requires a single initialization CMAF switching set [[!CMAF]] 7.3.4.2).
 
 # Timing of stand-alone IMSC1 and WebVTT text files # {#standalone-text-timing}
 
@@ -740,7 +738,7 @@ Some aspects of [[!DASH]] are not compatible with the interoperable timing model
 
 * The `@presentationDuration` attribute SHALL NOT be used. This information serves no purpose under the interoperable timing model.
 * The `@availabilityTimeComplete` attribute SHALL NOT be used. The concept of "incomplete but available" [=media segments=] that this attribute enables is not part of the interoperable timing model.
-* There SHALL NOT be "missing content segments" ([[!DASH]] 6.2.6) in the content. If content is lost during processing, the expectation is that the encoder/packager will either replace it with valid dummy content (e.g. blank picture or silent audio) or start a new period that does not contain the [=representation=] that incurs data loss.
+* There SHALL NOT be "missing content segments" ([[!DASH]] 6.2.6) in the content. If content is lost during processing, the expectation is that the encoder/packager will either replace it with valid content (e.g. content from a lower representation or potentially even blank picture or silent audio) or start a new period that does not contain the [=representation=] that incurs data loss.
 
 # Examples # {#timing-examples}
 
