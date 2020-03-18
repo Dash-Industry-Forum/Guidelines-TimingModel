@@ -27,8 +27,6 @@ New or more constrained requirement:
 
 </div>
 
-All DASH [=presentations=] are assumed to be conforming to these guidelines. A service MAY explicitly signal itself as conforming by including the string `https://dashif.org/guidelines/` in `MPD@profiles`.
-
 There is no strict backward compatibility with previous versions - best practices change over time and what was once considered sensible may be replaced by a superior approach later on. Therefore, clients and services that were conforming to version N of this document are not guaranteed to conform to version N+1.
 
 # Disclaimer # {#legal}
