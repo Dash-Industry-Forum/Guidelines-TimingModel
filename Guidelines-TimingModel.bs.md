@@ -9,7 +9,7 @@
 <pre class="metadata">
 Revision: 5.0
 
-Title: DASH-IF implementation guidelines: the DASH timing model
+Title: DASH-IF implementation guidelines: restricted timing model
 Status: LS-COMMIT
 Shortname: dash-timing
 URL: https://dashif-documents.azurewebsites.net/Guidelines-TimingModel/master/Guidelines-TimingModel.html

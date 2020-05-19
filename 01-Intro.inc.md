@@ -2,7 +2,20 @@
 
 The guidelines defined in this document support the creation of interoperable services for high-quality video distribution based on MPEG-DASH and related standards. These guidelines are provided in order to address DASH-IF members' needs and industry best practices. The guidelines support the implementation of conforming service offerings as well as DASH client implementations.
 
+The restricted timing model constrains the ordinary timing model defined in [[!DASH]] primarily by disallowing gaps in presentations, thereby increasing the compatibility of DASH services with devices that do not have robust support for playback of content with gaps.
+
+This timing model also provides editorial flexibility for the presentation author by allowing new periods to be started at any point. This is achieved by:
+
+1. Strictly defining the period boundary rules on the DASH service side.
+1. Permitting fleixble behavior from clients in how they transition between periods (to account for implementation limitations).
+
+Note: Some alternative timing model interpretations significantly restrict the ability of content authors to define period boundaries.
+
+In addition to defining the constraints for a restricted timing model, this document attempts to explain and illustrate many DASH timing concepts that often cause confusion, without constraining them further than already done by DASH-IF general guidelines, [[!DASH]] or [[!CMAF]].
+
 While alternative interpretations may be equally valid in terms of standards conformance, services and clients created following the guidelines defined in this document can be expected to exhibit highly interoperable behavior between different implementations.
+
+This part of the DASH-IF implementation guidelines is published as a stand-alone document for editorial reasons. Refer to the master document to understand the context in which this document should be viewed.
 
 # Interpretation # {#interpretation}
 
