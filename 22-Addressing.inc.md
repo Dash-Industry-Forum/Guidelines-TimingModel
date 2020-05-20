@@ -303,7 +303,7 @@ Below is an example of common usage of [=simple addressing=].
 
 The example defines a [=sample timeline=] with a [=timescale=] of 1000 units per second, with the [=period=] starting at position 900 (or 0.9 seconds) on the [=sample timeline=] and the first [=media segment=] starting at position 400 (or 0.4 seconds). The average duration of a [=media segment=] is 4001 (4.001 seconds). [=Media segment=] numbering starts at 800, so the first [=media segment=] is found at the relative URL `video/800.m4s`. The sequence of [=media segments=] continues to the end of the period, which is 900 seconds long, making for a total of 226 defined [=segment references=].
 
-The [=period=] start point is 500 milliseconds after the [=segment start point=] of the first [=media segment=] and the [=period=] end point is approximately 69 milliseconds after the [=segment start point=] of the last [=media segment=]. The real timing of the samples within the [=media segments=] may differ from these nominal values in the [=MPD=], to the extent permitted by the timing model.
+The [=period=] start point is 500 milliseconds after the [=segment start point=] of the first [=media segment=] and the [=period=] end point is approximately 275 milliseconds after the [=segment start point=] of the last [=media segment=]. The real timing of the samples within the [=media segments=] may differ from these nominal values in the [=MPD=], to the extent permitted by the timing model.
 
 <xmp highlight="xml">
 <MPD xmlns="urn:mpeg:dash:schema:mpd:2011">
