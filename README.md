@@ -46,4 +46,4 @@ Most recent content from the **published** branch (final outputs published by DA
 
 See [Document Authoring Kit](https://dashif.org/DocumentAuthoring/) for details on document authoring process and the relevant tooling.
 
-Join **#iop** on Slack for live chat: [![Slack Status](https://dashif-slack.azurewebsites.net/badge.svg)](https://dashif-slack.azurewebsites.net)
+[Join DASH-IF on Slack!](https://join.slack.com/t/dashif/shared_invite/zt-egme869x-JH~UPUuLoKJB26fw7wj3Gg)
