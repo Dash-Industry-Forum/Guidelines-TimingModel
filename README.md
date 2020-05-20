@@ -1,6 +1,8 @@
-# DASH-IF implementation guidelines: the DASH timing model
+# DASH-IF implementation guidelines: restricted timing model
 
-This document describes an interoperable DASH timing model based on the building blocks defined by MPEG.
+This document describes an interoperable DASH timing model based on the building blocks defined by MPEG. See output documents for more info.
+
+[Join DASH-IF on Slack!](https://join.slack.com/t/dashif/shared_invite/zt-egme869x-JH~UPUuLoKJB26fw7wj3Gg)
 
 # Submitting bug reports, proposals and comments
 
@@ -45,5 +47,3 @@ Most recent content from the **published** branch (final outputs published by DA
 # Document authoring
 
 See [Document Authoring Kit](https://dashif.org/DocumentAuthoring/) for details on document authoring process and the relevant tooling.
-
-[Join DASH-IF on Slack!](https://join.slack.com/t/dashif/shared_invite/zt-egme869x-JH~UPUuLoKJB26fw7wj3Gg)
