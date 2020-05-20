@@ -195,7 +195,7 @@ Either the `$Time$` or `$Number$` template variable SHALL be present in `Segment
 <div class="example">
 Below is an example of common usage of [=explicit addressing=].
 
-The example defines 225 [=media segments=] starting at position 900 on the [=sample timeline=] and lasting for a total of 900.225 seconds. The [=period=] ends at 900 seconds, so the last 0.225 seconds of content is clipped (out of bounds samples may also simply be omitted from the last [=media segment=]). The [=period=] starts at position 900 which matches the start position of the first [=media segment=] found at the relative URL `video/900.m4s`.
+The example defines 225 [=media segments=] starting at position 900 (or 0.9 seconds) on the [=sample timeline=] and lasting for a total of 900.225 seconds. The [=period=] is only 900 seconds long, so the last 0.225 seconds of content is clipped (out of bounds samples may also simply be omitted from the last [=media segment=]). The [=period=] start point is at position 900 (or 0.9 seconds) on the [=sample timeline=] which matches the start position of the first [=media segment=] found at the relative URL `video/900.m4s`.
 
 <xmp highlight="xml">
 <MPD xmlns="urn:mpeg:dash:schema:mpd:2011">
@@ -220,7 +220,7 @@ Parts of the [=MPD=] structure that are not relevant for this chapter have been 
 <div class="example">
 Below is an example of [=explicit addressing=] used in a scenario where different [=media segments=] have different durations (e.g. due to encoder limitations).
 
-The example defines a sequence of 11 [=media segments=] starting at position 120 on the [=sample timeline=] and lasting for a total of 95520 units at a [=timescale=] of 1000 units per second (which results in 95.52 seconds of data). The [=period=] starts at position 810, which is within the first [=media segment=], found at the relative URL `video/120.m4s`. The fifth [=media segment=] repeats once, resulting in a sixth [=media segment=] with the same duration.
+The example defines a sequence of 11 [=media segments=] starting at position 120 (or 0.12 seconds) on the [=sample timeline=] and lasting for a total of 95520 units at a [=timescale=] of 1000 units per second (which results in 95.52 seconds of data). The [=period=] start point on the [=sample timeline=] is at position 810 (or 0.81 seconds), which is within the first [=media segment=], found at the relative URL `video/120.m4s`. The fifth [=media segment=] repeats once, resulting in a sixth [=media segment=] with the same duration.
 
 <xmp highlight="xml">
 <MPD xmlns="urn:mpeg:dash:schema:mpd:2011">
@@ -301,9 +301,9 @@ Either the `$Time$` or `$Number$` template variable SHALL be present in `Segment
 <div class="example">
 Below is an example of common usage of [=simple addressing=].
 
-The example defines a [=sample timeline=] with a [=timescale=] of 1000 units per second, with the [=period=] starting at position 900 and the first [=media segment=] starting at position 400. The average duration of a [=media segment=] is 4001. [=Media segment=] numbering starts at 800, so the first [=media segment=] is found at the relative URL `video/800.m4s`. The sequence of [=media segments=] continues to the end of the period, which is 900 seconds long, making for a total of 226 defined [=segment references=].
+The example defines a [=sample timeline=] with a [=timescale=] of 1000 units per second, with the [=period=] starting at position 900 (or 0.9 seconds) on the [=sample timeline=] and the first [=media segment=] starting at position 400 (or 0.4 seconds). The average duration of a [=media segment=] is 4001 (4.001 seconds). [=Media segment=] numbering starts at 800, so the first [=media segment=] is found at the relative URL `video/800.m4s`. The sequence of [=media segments=] continues to the end of the period, which is 900 seconds long, making for a total of 226 defined [=segment references=].
 
-The [=period=] start point is 500 milliseconds after the [=segment start point=] of the first [=media segment=] and the [=period=] end point is approximately 69 milliseconds after the [=segment start point=] of the last [=media segment=]. The real timing of the samples within the [=media segments=] may differ from these nominal values in the [=MPD=], to the extent permitted by the timing model.
+The [=period=] start point is 500 milliseconds after the [=segment start point=] of the first [=media segment=] and the [=period=] end point is approximately 275 milliseconds after the [=segment start point=] of the last [=media segment=]. The real timing of the samples within the [=media segments=] may differ from these nominal values in the [=MPD=], to the extent permitted by the timing model.
 
 <xmp highlight="xml">
 <MPD xmlns="urn:mpeg:dash:schema:mpd:2011">
