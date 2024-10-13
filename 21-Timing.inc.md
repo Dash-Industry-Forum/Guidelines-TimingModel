@@ -21,7 +21,7 @@ The following [=MPD=] elements are most relevant to locating and scheduling the 
 1. [=Representations=] within a [=period=] are grouped into adaptation sets, which associate related [=representations=] and decorate them with metadata.
 
 <figure>
-	<img src="Images/Timing/BasicMpdElements.png" />
+	<img src="Images/Timing/BasicMpdElements.png" >
 	<figcaption>The primary contents of a [=presentation=], described by an [=MPD=].</figcaption>
 </figure>
 
@@ -45,7 +45,7 @@ Note: This calculation is necessary because the durations of XLink [=periods=] c
 An [=MPD=] defines an ordered list of one or more consecutive non-overlapping <dfn>periods</dfn> ([[!DASH]] 5.3.2). A [=period=] is both a time span on the [=MPD timeline=] and a definition of the data to be presented during this time span. [=Period=] timing is relative to the zero point of the [=MPD timeline=], though often indirectly (being relative to the previous [=period=]).
 
 <figure>
-	<img src="Images/Timing/PeriodsMakeTheMpd.png" />
+	<img src="Images/Timing/PeriodsMakeTheMpd.png" >
 	<figcaption>An [=MPD=] defines a collection of consecutive non-overlapping [=periods=].</figcaption>
 </figure>
 
@@ -147,7 +147,7 @@ Parts of the [=MPD=] structure that are not relevant for this chapter have been 
 The samples within a [=representation=] exist on a linear <dfn>sample timeline</dfn> defined by the encoder that creates the samples. [=Sample timelines=] are mapped onto the [=MPD timeline=] by metadata stored in or referenced by the [=MPD=] ([[!DASH]] 7.3.2).
 
 <figure>
-	<img src="Images/Timing/TimelineAlignment.png" />
+	<img src="Images/Timing/TimelineAlignment.png" >
 	<figcaption>A [=sample timeline=] is mapped onto the [=MPD timeline=] based on parameters defined in the [=MPD=], relating the media samples provided by a [=representation=] to the portion of the [=MPD timeline=] covered by the [=period=] that references the [=representation=]. The [=sample timelines=] extend further beyond the range of the [=period=] (full extents not illustrated).</figcaption>
 </figure>
 
@@ -164,7 +164,7 @@ A [=sample timeline=] is measured in <dfn>timescale units</dfn> defined as a num
 Note: While optional in [[!DASH]], the presence of the `@timescale` attribute is required by the interoperable timing model because the default value of 1 is unlikely to match any real-world content and is far more likely to indicate an unintentional content authoring error.
 
 <figure>
-	<img src="Images/Timing/PresentationTimeOffset.png" />
+	<img src="Images/Timing/PresentationTimeOffset.png" >
 	<figcaption>`@presentationTimeOffset` is the key component in establishing the relationship between the [=MPD timeline=] and a [=sample timeline=].</figcaption>
 </figure>
 
@@ -187,7 +187,7 @@ The portion of the [=period=] that a [=representation=] must provide [=media seg
 In a [=static presentation=], a [=representation=] SHALL provide enough [=media segments=] to cover the entire time span of the [=period=].
 
 <figure>
-	<img src="Images/Timing/StaticMpdMustBeCovered.png" />
+	<img src="Images/Timing/StaticMpdMustBeCovered.png" >
 	<figcaption>In a [=static presentation=], the entire [=period=] must be covered with [=media segments=].</figcaption>
 </figure>
 
@@ -196,7 +196,7 @@ In a [=static presentation=], a [=representation=] SHALL provide enough [=media 
 In a [=dynamic presentation=], a [=representation=] SHALL provide enough [=media segments=] to cover the time span of the [=period=] that intersects with the [=time shift buffer=] at any point during the [=MPD validity duration=].
 
 <figure>
-	<img src="Images/Timing/MandatorySegmentReferencesInDynamicMpd.png" />
+	<img src="Images/Timing/MandatorySegmentReferencesInDynamicMpd.png" >
 	<figcaption>In a [=dynamic presentation=], the [=time shift buffer=] and [=MPD validity duration=] determine the set of required [=segment references=] for each [=representation=]. [=Media segments=] filled with gray need not be referenced due to falling outside the [=time shift buffer=] in its maximum extents during the [=MPD validity duration=], despite falling within the bounds of a [=period=].</figcaption>
 </figure>
 
@@ -222,7 +222,7 @@ In a [=dynamic presentation=], the [=MPD=] SHALL NOT contain [=unnecessary segme
 [=Segment start points=] and [=segment end points=] do not need to be aligned with [=period=] start/end points ([[!DASH]] 7.2.1). The general expectation is that only the content that falls within the [=period=] time span is presented by DASH clients. Allowing for overflow outside this time span ensures that [=periods=] can be easily started and ended at arbitrary positions on the [=MPD timeline=] without leaving gaps. Starting and ending [=periods=] is an editorial decision that is typically independent of the technical structure of the contents of the [=period=].
 
 <figure>
-	<img src="Images/Timing/SamplesOnPeriodBoundary.png" />
+	<img src="Images/Timing/SamplesOnPeriodBoundary.png" >
 	<figcaption>[=Media segments=] and samples need not align with [=period=] boundaries. Some samples may be entirely outside a [=period=] (marked gray) and some may overlap the [=period=] boundary (yellow).</figcaption>
 </figure>
 
@@ -239,7 +239,7 @@ As perfect alignment between sample and [=period=] boundaries cannot be expected
 Some encoders experience clock drift - they do not produce exactly 1 second worth of output per 1 second of input, either stretching or compressing the [=sample timeline=] with respect to the [=MPD timeline=].
 
 <figure>
-	<img src="Images/Timing/ClockDrift.png" />
+	<img src="Images/Timing/ClockDrift.png" >
 	<figcaption>Comparison of an encoder correctly tracking [=wall clock=] time (blue) and an encoder with a clock that runs 0.8% too slowly (yellow), leading it to producing fewer seconds of content than expected (the correct amount of content has been temporally compressed by the encoder to fit into a smaller number of seconds). A DASH packager cannot use the yellow encoder's output as-is or it would violate the DASH timing model, which requires services to track [=wall clock=] time, and potentially lead to track de-synchronization.</figcaption>
 </figure>
 
@@ -304,7 +304,7 @@ An [=MPD=] MAY contain unrelated [=periods=] between [=periods=] that contain [=
 [=Period-connected=] adaptation sets content SHOULD be signaled in the [=MPD=] as [=period-connected=]. This signaling helps clients ensure seamless playback across [=period=] transitions.
 
 <figure>
-	<img src="Images/Timing/PeriodConnectivity.png" />
+	<img src="Images/Timing/PeriodConnectivity.png" >
 	<figcaption>Adaptation sets can be signaled as [=period-connected=], enabling client optimizations. Arrows on diagram indicate direction of connectivity reference (from future to past), with the implied message being "the client can use the same decoder configuration it used where the arrow points to".</figcaption>
 </figure>
 
@@ -323,7 +323,7 @@ The [=period-connected=] adaptation sets have the same `@id` and the same set of
 As a [=period=] may start and/or end in the middle of a [=media segment=], the same [=media segment=] may simultaneously be referenced by two [=period-connected=] adaptation sets, with one part of it scheduled for playback during the first [=period=] and the other part during the second [=period=]. This is likely to be the case when no [=sample timeline=] discontinuity is introduced by the transition.
 
 <figure>
-	<img src="Images/Timing/SegmentOverlapOnPeriodConnectivity.png" />
+	<img src="Images/Timing/SegmentOverlapOnPeriodConnectivity.png" >
 	<figcaption>The same [=media segment=] will often exist in two [=periods=] at a [=period-connected=] transition. On the diagram, this is segment 4.</figcaption>
 </figure>
 
@@ -425,7 +425,7 @@ An <dfn>availability window</dfn> is a time span on the [=MPD timeline=] that de
 Each adaptation set has its own [=availability window=]. Services SHALL NOT define [=MPD=] attributes that affect the [=availability window=] on the [=representation=] level.
 
 <figure>
-	<img src="Images/Timing/AvailabilityWindow.png" />
+	<img src="Images/Timing/AvailabilityWindow.png" >
 	<figcaption>The [=availability window=] determines which [=media segments=] can be expected to be [=available=], based on where their [=segment end point=] lies.</figcaption>
 </figure>
 
@@ -469,7 +469,7 @@ The following additional factors further constrain the set of [=media segments=]
 The [=time shift buffer=] extends from `now - MPD@timeShiftBufferDepth` to `now`. In the absence of `MPD@timeShiftBufferDepth` the start of the [=time shift buffer=] is the [=effective availability start time=].
 
 <figure>
-	<img src="Images/Timing/TimeShiftBuffer.png" />
+	<img src="Images/Timing/TimeShiftBuffer.png" >
 	<figcaption>[=Media segments=] overlapping the [=time shift buffer=] may potentially be presented by a client if other constraints do not forbid it.</figcaption>
 </figure>
 
@@ -505,7 +505,7 @@ Advisement: A common error in DASH content authoring is to attempt to use `MPD@m
 The <dfn>effective time shift buffer</dfn> is the time span from the start of the [=time shift buffer=] to `now - PresentationDelay`. Services SHALL NOT define a value for `MPD@suggestedPresentationDelay` that results in an [=effective time shift buffer=] of negative or zero duration.
 
 <figure>
-	<img src="Images/Timing/WindowInteractions.png" />
+	<img src="Images/Timing/WindowInteractions.png" >
 	<figcaption>[=Media segments=] that overlap the [=effective time shift buffer=] are the ones that may be presented at time `now`. Two [=representations=] with different segment lengths are shown. Diagram assumes `@availabiltiyTimeOffset=0`.</figcaption>
 </figure>
 
@@ -592,7 +592,7 @@ Services SHALL NOT require clients to support in-band events - it is an optional
 An MPD update MAY combine adding [=segment references=] to the last [=period=] with adding of new [=periods=]. An [=MPD=] update that adds content MAY be combined [[#timing-mpd-updates-remove-content|with an MPD update that removes content]].
 
 <figure>
-	<img src="Images/Timing/MpdUpdate - AddContent.png" />
+	<img src="Images/Timing/MpdUpdate - AddContent.png" >
 	<figcaption>[=MPD=] updates can add both [=segment references=] and [=periods=] (additions highlighted in blue).</figcaption>
 </figure>
 
@@ -628,7 +628,7 @@ Note: As each adaptation set has its own [=availability window=], so does each a
 [=Media segments=] that overlap or end before `EarliestRemovalPoint` might be considered by clients to be [=available=] at the time the [=MPD=] update is processed. Therefore, an [=MPD=] update removing content SHALL NOT remove any [=segment references=] to [=media segments=] with a [=segment start point=] before or at `EarliestRemovalPoint`.
 
 <figure>
-	<img src="Images/Timing/MpdUpdate - RemoveContent.png" />
+	<img src="Images/Timing/MpdUpdate - RemoveContent.png" >
 	<figcaption>[=MPD=] updates can remove both [=segment references=] and [=periods=] (removals highlighted in red).</figcaption>
 </figure>
 
@@ -678,28 +678,28 @@ Note: There is no requirement that clients poll for updates at `MPD@minimumUpdat
 
 It can often be the case that a live service signals a short [=MPD validity duration=] to allow for the possibility of terminating the last [=period=] with minimal end-to-end latency. At the same time, generating future [=segment references=] might not require any additional information to be obtained by clients. That is, a situation might occur where constant [=MPD refreshes=] are required but the [=MPD=] content rarely changes.
 
-Clients using HTTP to perform [=MPD refreshes=] SHOULD use conditional GET requests as specified in [[!RFC7232]] to avoid unnecessary data transfers when the contents of the [=MPD=] do not change between refreshes.
+Clients using HTTP to perform [=MPD refreshes=] SHOULD use conditional GET requests as specified in [[!RFC7232 obsolete]] to avoid unnecessary data transfers when the contents of the [=MPD=] do not change between refreshes.
 
 # Segment loss handling # {#missing-segments}
 
 Due to network or other faults, it is possible that [=media segments=] do not reach the DASH packager, effectively creating a discontinuity in a [=representation=]. As DASH clients typically have difficulties processing content with gaps and the timing model described here forbids gaps in general, missing segments would likely lead to an unsatisfactory playback experience for end-users.
 
 <figure>
-	<img src="Images/Timing/MissingSegment.png" />
+	<img src="Images/Timing/MissingSegment.png" >
 	<figcaption>A DASH packager might not have every [=media segment=] available when it needs to publish them. Corrective actions must be taken to ensure an uninterrupted timeline is presented to DASH clients.</figcaption>
 </figure>
 
 Therefore, DASH services SHALL NOT publish [=periods=] that have missing segments, whether the segment loss is described by "missing content segments" ([[!DASH]] 6.2.6) or by any other means (including not describing it).
 
 <figure>
-	<img src="Images/Timing/MissingSegment-FixWithPeriodSplitting.png" />
+	<img src="Images/Timing/MissingSegment-FixWithPeriodSplitting.png" >
 	<figcaption>The simplest correction is to start a new period that does not include the affected [=representation=] for the duration of the loss. Other [=representations=] remain present and a client can often continue seamless playback without the missing [=representation=].</figcaption>
 </figure>
 
 Instead, DASH services SHOULD start a new [=period=] that does not include the [=representation=] that would experience a gap, later restoring the [=representation=] with a new [=period=] transition. [[#timing-connectivity|Period-connected adptation sets]] can enable DASH clients to perform such transitions seamlessly in some scenarios.
 
 <figure>
-	<img src="Images/Timing/MissingSegment-FixWithPlaceholder.png" />
+	<img src="Images/Timing/MissingSegment-FixWithPlaceholder.png" >
 	<figcaption>Other solutions might involve replacing the missing [=media segment=] with a placeholder, either from a different [=representation=] or an entirely artificial one.</figcaption>
 </figure>
 
@@ -749,35 +749,35 @@ This section is informative.
 It may be that for various content processing workflow reasons, some tracks have a different duration from others. For example, the audio track might start a fraction of a second before the video track and end some time before the video track ends.
 
 <figure>
-	<img src="Images/Timing/NonequalLengthTracks - Initial.png" />
+	<img src="Images/Timing/NonequalLengthTracks - Initial.png" >
 	<figcaption>Content with different track lengths, before packaging as DASH.</figcaption>
 </figure>
 
 You now have some choices to make in how you package these tracks into a DASH presentation that conforms to this document. Specifically, there exists the requirement that every [=representation=] must cover the entire [=period=] with media samples.
 
 <figure>
-	<img src="Images/Timing/NonequalLengthTracks - CutEverything.png" />
+	<img src="Images/Timing/NonequalLengthTracks - CutEverything.png" >
 	<figcaption>Content may be cut (indicated in black) to equalize track lengths.</figcaption>
 </figure>
 
 The simplest option is to define a single [=period=] that contains [=representations=] resulting from cutting the content to match the shortest common time span, thereby covering the entire [=period=] with samples. Depending on the nature of the data that is removed, this may or may not be acceptable.
 
 <figure>
-	<img src="Images/Timing/NonequalLengthTracks - PadEverything.png" />
+	<img src="Images/Timing/NonequalLengthTracks - PadEverything.png" >
 	<figcaption>Content may be padded (indicated in green) to equalize track lengths.</figcaption>
 </figure>
 
 If you wish to preserve track contents in their entirety, the most interoperable option is to add padding samples (e.g. silence or black frames) to all tracks to ensure that all [=representations=] have enough data to cover the entire [=period=] with samples. This may require customization of the encoding process, as the padding must match the codec configuration of the real content and might be impractical to add after the real content has already been encoded.
 
 <figure>
-	<img src="Images/Timing/NonequalLengthTracks - MakePeriods.png" />
+	<img src="Images/Timing/NonequalLengthTracks - MakePeriods.png" >
 	<figcaption>New [=periods=] may be started at any change in the set of available tracks.</figcaption>
 </figure>
 
 Another option that preserves track contents is to [[#timing-examples-splitperiod|split the content]] into multiple [=periods=] that each contain a different set of [=representations=], starting a new [=period=] whenever a track starts or ends. This enables you to ensure every [=representations=] covers its [=period=] with samples. The upside of this approach is that it can be done easily, requiring only manipulation of the MPD. The downside is that some clients may be unable to seamlessly play across every [=period=] transition.
 
 <figure>
-	<img src="Images/Timing/NonequalLengthTracks - Mix.png" />
+	<img src="Images/Timing/NonequalLengthTracks - Mix.png" >
 	<figcaption>You may combine the different approaches, cutting in some places (black), padding in others (green) and defining multiple [=periods=] as needed.</figcaption>
 </figure>
 
@@ -798,7 +798,7 @@ This example shows how an existing [=period=] can be split in a way that clients
 Our starting point is a presentation with a single [=period=] that contains an audio [=representation=] with short samples and a video [=representation=] with slightly longer samples, so that [=media segment=] start points do not always overlap.
 
 <figure>
-	<img src="Images/Timing/SplitInTwoPeriods - Before.png" />
+	<img src="Images/Timing/SplitInTwoPeriods - Before.png" >
 	<figcaption>Presentation with one period, before splitting. Blue is a segment, yellow is a sample. Duration in arbitrary units is listed on samples. Segment durations are taken to be the sum of sample durations. `presentationTimeOffset` may have any value - it is listed because will be referenced later.</figcaption>
 </figure>
 
@@ -817,7 +817,7 @@ The mechanism that enables [=period=] splitting in the middle of a segment is th
 After splitting the example presentation, we arrive at the following structure.
 
 <figure>
-	<img src="Images/Timing/SplitInTwoPeriods - After.png" />
+	<img src="Images/Timing/SplitInTwoPeriods - After.png" >
 	<figcaption>Presentation with two [=periods=], after splitting. Audio segment 3 and video segment 3 are shared by both [=periods=], with the connectivity signaling indicating that seamless playback with de-duplicating behavior is expected from clients.</figcaption>
 </figure>
 
@@ -834,7 +834,7 @@ In encrypted content, the `default_KID` of a [=representation=] might need to be
 To perform the `default_KID` change, start a new [=period=] on every change, treating each [=representation=] as an independently changing element. With proper signaling, clients can perform this change seamlessly.
 
 <figure>
-	<img src="Images/Timing/KID change.png" />
+	<img src="Images/Timing/KID change.png" >
 	<figcaption>A change in `default_KID` starts a new [=period=]. Orange indicates audio and yellow video [=representation=].</figcaption>
 </figure>
 

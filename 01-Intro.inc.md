@@ -63,7 +63,7 @@ This document is based on the 4th edition DASH [[!DASH]] and 2nd edition CMAF [[
 DASH together with related standards and specifications is the foundation for an ecosystem of services and clients that work together to enable audio/video/text and related content to be presented to end-users.
 
 <figure>
-	<img src="Images/RoleOfIop.png" />
+	<img src="Images/RoleOfIop.png" >
 	<figcaption>This document connects DASH with international standards and industry specifications.</figcaption>
 </figure>
 
@@ -81,7 +81,7 @@ This document was generated in close coordination with [[DVB-DASH]]. The feature
 1. Data containers that clients will download during playback of a [=presentation=] in order to obtain media samples.
 
 <figure>
-	<img src="Diagrams/DashStructure.png" />
+	<img src="Diagrams/DashStructure.png" >
 	<figcaption>Relationships of primary DASH data structures and the standards they are defined in.</figcaption>
 </figure>
 
