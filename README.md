@@ -18,32 +18,11 @@ You may also submit pull requests if you are familiar with their use.
 
 Most recent content from the **master** branch (may contain work in progress):
 
-![Build status of master branch](https://dev.azure.com/dashif/Automation/_apis/build/status/Guidelines-TimingModel?branchName=master)
+[![Build status of master branch](https://github.com/Dash-Industry-Forum/Guidelines-TimingModel/actions/workflows/publish.yml/badge.svg)](https://github.com/Dash-Industry-Forum/Guidelines-TimingModel/actions/workflows/publish.yml)
 
-* [HTML document](https://dashif-documents.azurewebsites.net/Guidelines-TimingModel/master/Guidelines-TimingModel.html)
-* [PDF document](https://dashif-documents.azurewebsites.net/Guidelines-TimingModel/master/Guidelines-TimingModel.pdf)
-* [Download PDF + HTML as archive](https://dashif-documents.azurewebsites.net/Guidelines-TimingModel/master/Guidelines-TimingModel.zip)
-
-Most recent content from the **community-review** branch (latest version published for community review):
-
-![Build status of community-review branch](https://dev.azure.com/dashif/Automation/_apis/build/status/Guidelines-TimingModel?branchName=community-review)
-
-* [HTML document](https://dashif-documents.azurewebsites.net/Guidelines-TimingModel/community-review/Guidelines-TimingModel.html)
-* [PDF document](https://dashif-documents.azurewebsites.net/Guidelines-TimingModel/community-review/Guidelines-TimingModel.pdf)
-* [Download PDF + HTML as archive](https://dashif-documents.azurewebsites.net/Guidelines-TimingModel/community-review/Guidelines-TimingModel.zip)
-
-Most recent content from the **published** branch (final outputs published by DASH-IF):
-
-![Build status of published branch](https://dev.azure.com/dashif/Automation/_apis/build/status/Guidelines-TimingModel?branchName=published)
-
-* [HTML document](https://dashif-documents.azurewebsites.net/Guidelines-TimingModel/published/Guidelines-TimingModel.html)
-* [PDF document](https://dashif-documents.azurewebsites.net/Guidelines-TimingModel/published/Guidelines-TimingModel.pdf)
-* [Download PDF + HTML as archive](https://dashif-documents.azurewebsites.net/Guidelines-TimingModel/published/Guidelines-TimingModel.zip)
-
-[View automated build history for all branches](https://dev.azure.com/dashif/Automation/_build?definitionId=13)
-
-
+* [HTML document](https://dashif.org/Guidelines-TimingModel/)
+* [PDF document](https://dashif.org/Guidelines-TimingModel/Timing-Model.pdf)
 
 # Document authoring
 
-See [Document Authoring Kit](https://dashif.org/DocumentAuthoring/) for details on document authoring process and the relevant tooling.
+See [Document Authoring Kit](https://dashif.org/DASH-IF-IOP/authoring/) for details on document authoring process and the relevant tooling.
