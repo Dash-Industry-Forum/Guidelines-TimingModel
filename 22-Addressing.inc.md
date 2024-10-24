@@ -36,7 +36,7 @@ Clauses in section only apply to [=representations=] that use [=indexed addressi
 Note: [[!DASH]] makes a distinction between "segment" (HTTP-addressable entity) and "subsegment" (byte range of an HTTP-addressable entity). This document does not make such a distinction and has no concept of subsegments. Usage of "segment" here matches the definition of CMAF segment [[!CMAF]].
 
 <figure>
-	<img src="Images/Timing/IndexedAddressing.png" />
+	<img src="Images/Timing/IndexedAddressing.png" >
 	<figcaption>[=Indexed addressing=] is based on an index segment that references all [=media segments=].</figcaption>
 </figure>
 
@@ -165,7 +165,7 @@ Note: This addressing mode is sometimes called "SegmentTemplate with SegmentTime
 Clauses in section only apply to [=representations=] that use [=explicit addressing=].
 
 <figure>
-	<img src="Images/Timing/ExplicitAddressing.png" />
+	<img src="Images/Timing/ExplicitAddressing.png" >
 	<figcaption>[=Explicit addressing=] uses a segment template that is combined with explicitly defined time spans for each [=media segment=] in order to reference [=media segments=], either by start time or by sequence number.</figcaption>
 </figure>
 
@@ -279,7 +279,7 @@ Note: This addressing mode is sometimes called "SegmentTemplate without SegmentT
 Clauses in section only apply to [=representations=] that use [=simple addressing=].
 
 <figure>
-	<img src="Images/Timing/SimpleAddressing.png" />
+	<img src="Images/Timing/SimpleAddressing.png" >
 	<figcaption>[=Simple addressing=] uses a segment template that is combined with approximate first [=media segment=] timing information and an average [=media segment=] duration in order to reference [=media segments=], either by start time or by sequence number. Note that `@eptDelta` does not affect the generated paths!</figcaption>
 </figure>
 
@@ -327,7 +327,7 @@ Parts of the [=MPD=] structure that are not relevant for this chapter have been 
 When using [=simple addressing=], the samples contained in a [=media segment=] MAY cover a different time span on the [=sample timeline=] than what is indicated by the nominal timing in the [=MPD=], as long as no constraints defined in this document are violated by this deviation.
 
 <figure>
-	<img src="Images/Timing/InaccurateAddressing.png" />
+	<img src="Images/Timing/InaccurateAddressing.png" >
 	<figcaption>[=Simple addressing=] relaxes the requirement on [=media segment=] contents matching the [=sample timeline=]. Red boxes indicate samples.</figcaption>
 </figure>
 
