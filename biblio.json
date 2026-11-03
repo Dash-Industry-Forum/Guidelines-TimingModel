@@ -20,5 +20,10 @@
         "href": "https://datacenter.iers.org/data/latestVersion/16_BULLETIN_C16.txt",
         "title": "IERS Bulletin C (leap second announcements)",
         "publisher": "IERS"
+    },
+    "CGPM-2026-RES5": {
+        "href": "https://www.bipm.org/en/cgpm-2026/resolution-5",
+        "title": "Resolution 5 of the 28th CGPM (2026): On the technical actions needed to ensure the continuity of UTC",
+        "publisher": "BIPM"
     }
 }

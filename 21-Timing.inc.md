@@ -34,7 +34,7 @@ There exist two types of DASH [=presentations=], indicated by `MPD@type` [[!DASH
 	* Furthermore, [=media segments=] may become [=available=] and cease to be [=available=] with the passage of time.
 	* [[#timing-mpd-updates|The MPD may change over time]], enabling the structure of the [=presentation=] to change over time (e.g. when a new title in the [=presentation=] is offered with a different set of languages).
 
-In a [=dynamic presentation=], the zero point of the [=MPD timeline=] is the mapped to the point in [=wall clock=] time indicated by the <dfn>effective availability start time</dfn>, which is formed by taking `MPD@availabilityStartTime` and applying any `LeapSecondInformation` offset ([[!DASH]] 5.3.9.5 and 5.13). This allows a [=wall clock=] time to be associated with each [=media segment=], indicating the moment the [=media segment=] is intended to be presented. The zero point of the [=MPD timeline=] will move when leap seconds occur ([[!DASH]] 5.13). See also [[#leap-seconds]].
+In a [=dynamic presentation=], the zero point of the [=MPD timeline=] is mapped to the point in [=wall clock=] time indicated by the <dfn>effective availability start time</dfn>, which is `MPD@availabilityStartTime` (see [[#leap-seconds]]). This allows a [=wall clock=] time to be associated with each [=media segment=], indicating the moment the [=media segment=] is intended to be presented.
 
 `MPD@mediaPresentationDuration` MAY be present in an [=MPD=]. If present, it SHALL accurately match the duration between the zero point on the [=MPD timeline=] and the end of the last [=period=], including the duration of any XLink [=periods=]. Clients SHALL calculate the total duration of a [=static presentation=] by adding up the durations of each [=period=] and SHALL NOT rely on the presence of `MPD@mediaPresentationDuration`.
 
@@ -362,8 +362,6 @@ The below [=MPD=] consists of two 300-second [=periods=]. The duration of the fi
 
 The [=dynamic presentation=] was intended to be presented starting at 09:35 UTC on December 2, 2017, allowing for up to 400 seconds of [=time shift=] by the DASH client. By the absence of `MPD@minimumUpdatePeriod`, the [=MPD=] indicates that its contents will never change.
 
-The absence of an `LeapSecondInformation` element indicates the service provider does not expect the service to remain accessible for long enough to encounter a leap second.
-
 <xmp highlight="xml">
 <MPD xmlns="urn:mpeg:dash:schema:mpd:2011" type="dynamic"
 	availabilityStartTime="2017-12-02T09:35:00Z" timeShiftBufferDepth="PT400S">
@@ -410,11 +408,9 @@ Issue: We could benefit from some detailed examples here, especially as clock sy
 
 ## Leap seconds ## {#leap-seconds}
 
-[=Dynamic presentations=] that cross the boundary between December/January or June/July ([[LEAP-SECONDS]]) need to correctly represent the effects of leap seconds to DASH clients, which shift the [=MPD timeline=] start point. Under the model defined by [[!DASH]] 5.13, clients are informed of necessary leap second adjustments via the [=MPD=].
+No leap second has been added to UTC since the end of 2016. The CGPM has decided that UTC becomes continuous from 20 May 2027 and that, instead of being corrected by leap seconds, the difference between UT1 and UTC is allowed to grow to up to 3600 seconds (one hour) ([[CGPM-2026-RES5]]). IERS has announced that no leap second will be introduced at the end of December 2026 ([[LEAP-SECONDS]]).
 
-The [=MPD=] of a [=dynamic presentations=] SHALL publish leap second offset information in the [=MPD=], in the form of a `LeapSecondInformation` element as defined by [[!DASH]] 5.13, unless the service provider does not intend for the [=presentation=] to remain accessible long enough to encounter a December/January or June/July transition in the UTC timezone.
-
-Clients SHALL process leap second offset information (and any updates received due to [=MPD refreshes=]) in order to accurately calculate the [=effective availability start time=].
+[=Dynamic presentations=] therefore do not need to handle leap seconds. The [=MPD=] of a [=dynamic presentation=] SHOULD NOT contain a `LeapSecondInformation` element ([[!DASH]] 5.13). Clients MAY ignore a `LeapSecondInformation` element and use `MPD@availabilityStartTime` as the [=effective availability start time=].
 
 ## Availability ## {#timing-availability}
 
@@ -537,7 +533,6 @@ Some common reasons to make changes in the [=MPDs=] of [=dynamic presentations=]
 DASH-IF implementation guidelines further extend these constraints:
 
 * `MPD@availabilityStartTime` SHALL NOT change.
-	* Leap second adjustments are performed by adjusting the `LeapSecondInformation` element (see [[#leap-seconds]]).
 * `Period@start` SHALL NOT change.
 * `Period@duration` SHALL NOT change except when explicitly allowed by other statements in this document.
 * `AdaptationSet@id` SHALL be present on every `AdaptationSet` element.
